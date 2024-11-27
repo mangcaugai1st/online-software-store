@@ -1,0 +1,82 @@
+* E-Commerce Website Fetures
+** User Authentication:
+_ Cho phép người dùng đăng ký tài khoản mới.
+_ Cung cấp những tính năng cho người dùng như
+đăng nhập, đăng xuất và quản lý mật khẩu.
+_ Lưu trữ thông tin user như là tên, email, mật khẩu.
+** Product Management:
+_ Hiển thị danh mục sản phẩm với các thông tin chi tiết như
+tên sản phẩm, giá, mô tả và hình ảnh.
+_ Cho phép người dùng xem sản phẩm theo danh mục.
+_ Triển khai các chức năng tìm kiếm, lọc sản phẩm.
+** Shopping Cart Management:
+_ Cho phép user thêm sản phẩm vào trong giỏ hàng.
+_ Cung cấp các tính năng như cập nhật số lượng sản phẩm
+trong giỏ hàng và xóa sản phẩm ra khỏi giỏ hàng.
+_ Tính toán và hiển thị tổng giá tiền của các sản phẩm
+trong giỏ hàng
+** Order Processing:
+_ Cho phép người dùng đặt hàng một cách an toàn.
+_ Lấy ra chi tiết đơn hàng bao gồm mã đơn hàng,
+ngày tháng đặt hàng, tổng số lượng.
+_ Cung cấp chức năng theo dõi đơn hàng để user
+có thể theo dõi trạng thái đơn hàng của họ.
+** Category Management
+_ Cho phép admin thêm, sửa, xóa danh mục sản phẩm.
+
+
+* Entites and Attributes for E-commerce Website
+1. Product: Contains details about the product.
+   _ Product_ID (PK): Unique identifier for each product.
+   _ Name: Name of the product.
+   _ Price: Price of the product.
+   _ Description: Descrition of the product.
+2. Order: Contains details about the orders.
+   _ Order_ID (PK): Unique identifier for each order.
+   _ Order_Amount: Amount of the order.
+   _ Order_Date: Date on which the order is placed.
+3. Customer: Store information about the customers.
+   _ User_ID (PK): Unique identifier for each user or customer.
+   _ Name: Name of the user.
+   _ Email: Email of the user.
+   _ Password: Password of the user.
+4. Payment: Contains details about the payment.
+   _ Payment_ID (PK): Unique identifier for each payment.
+   _ Type: Payment methods.
+   _ Amount: Total amount paid by user.
+5. Cart: Conatains details about the cart.
+   _ Cart_ID (PK): Unique identifier for each cart.
+   _ User_ID (Foreign Key): Reference to the user table.
+6. Category: Contains details about the category options.
+   _ Category_ID: Unique identifier for each category.
+   _ Name: Name of the category.
+   _ Picture: Images of the categories.
+   _ Description: Description of the category.
+* Relationships Between These Entities
+1. Order - Customer Relationship
+   _ Mỗi user có thể đặt nhiều đơn hàng.
+   _ Mỗi đơn hàng thì được đặt bởi một user.
+   _ Đây là mối quan hệ một - nhiều.
+2. Mối quan hệ Product - Cart
+   _ Một sản phẩm có thể được thêm vào nhiều giỏ hàng.
+   _ Mỗi giỏ hàng có thể chứa nhiều sản phẩm.
+   _ Đây là mối quan hệ nhiều - nhiều.
+3. Mối quan hệ Customer - Payment
+   _ Một user có thể thực hiện nhiều payment.
+   _ Mỗi payment được thực hiện bởi chính xác một user. 
+   _ Đây là mốt quan hệ một - nhiều.
+4. Mối quan hệ Order - Product
+   _ Một order có thể chứa nhiều sản phẩm.
+   _ Nhiều product được đặt trong mỗi đơn hàng.
+   _ Đây là mối quan hệ một - nhiều.
+5. Mối quan hệ Order - Payment 
+   _ Một order chỉ có một payment.
+   _ Đây là mối quan hệ một - một.
+6. Mối quan hệ Product - Category
+   _ Một product có thể thuộc nhiều danh mục.
+   _ Một danh mục có thể chứa nhiều sản phẩm
+   _ Đây là mối quan hệ một - nhiều
+
+
+
+
