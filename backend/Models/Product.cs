@@ -35,4 +35,5 @@ public class Product
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
     public ICollection<ProductImage>? ProductImages { get; set; }
+    public ICollection<OrderDetail>? OrderDetails { get; set; }
 }

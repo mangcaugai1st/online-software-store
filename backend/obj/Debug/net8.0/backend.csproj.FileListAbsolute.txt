@@ -140,3 +140,4 @@ D:\mangcaugai1st\backend\obj\Debug\net8.0\refint\backend.dll
 D:\mangcaugai1st\backend\obj\Debug\net8.0\backend.pdb
 D:\mangcaugai1st\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 D:\mangcaugai1st\backend\obj\Debug\net8.0\ref\backend.dll
+D:\mangcaugai1st\backend\obj\Debug\net8.0\backend.sourcelink.json

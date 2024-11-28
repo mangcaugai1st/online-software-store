@@ -39,4 +39,6 @@ public class Order
 
     // One-to-one relationship with PaymentDetail
     public PaymentDetail? PaymentDetail { get; set; }
+    
+    public ICollection<OrderDetail>? OrderDetails { get; } = new List<OrderDetail>();
 }
