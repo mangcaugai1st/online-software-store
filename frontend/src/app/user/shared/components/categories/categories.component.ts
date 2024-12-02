@@ -2,11 +2,14 @@ import {Component, OnInit} from '@angular/core';
 import {Category} from '../../../../models/category.model'
 import {CategoryService} from '../../../../services/category.service'
 import {NgForOf} from '@angular/common';
+import {HttpClientModule} from '@angular/common/http';
+
 @Component({
   selector: 'app-categories',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    HttpClientModule
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
@@ -22,9 +25,7 @@ export class CategoriesComponent implements OnInit{
 
   GetCategories(){
     this.categoryService.getCategories().subscribe({
-      next : (categories) =>{
-        this.categories = categories
-      },
+      next : (categories) => { this.categories = categories },
       error : error => console.log(error)
     })
   }
