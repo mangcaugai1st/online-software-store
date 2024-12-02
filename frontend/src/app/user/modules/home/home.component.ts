@@ -1,12 +1,13 @@
 import { Component } from '@angular/core';
-import {HeaderComponent} from '../../shared/components/header/header.component';
 import {NgForOf} from '@angular/common';
+import {CategoriesComponent} from '../../shared/components/categories/categories.component';
 
 @Component({
   selector: 'app-home',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    CategoriesComponent
   ],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css'

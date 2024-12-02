@@ -57,5 +57,10 @@ public class MyDbContext : DbContext
             .WithMany(e => e.OrderDetails)
             .HasForeignKey(e => e.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
+
+        modelBuilder.Entity<Category>().HasData(
+            new Category { Id = 1, Name = "Giải trí", Description = "testest" },
+            new Category { Id = 2, Name = "Làm việc", Description = "testest" }
+        );
     }
 }
