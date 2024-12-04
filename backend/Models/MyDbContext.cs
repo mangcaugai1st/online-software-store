@@ -62,5 +62,15 @@ public class MyDbContext : DbContext
             new Category { Id = 1, Name = "Giải trí", Description = "testest" },
             new Category { Id = 2, Name = "Làm việc", Description = "testest" }
         );
+        
+        modelBuilder.Entity<Product>().HasData(
+            new Product {Id = 1, Name = "Photoshop", Description = "photoshop", StockQuantity = 100, IsActive = true, CategoryId = 2 },
+            new Product {Id = 2, Name = "Dota 2", Description = "Dota 2", StockQuantity = 100, IsActive = true, CategoryId = 1 }
+        );
+
+        modelBuilder.Entity<ProductImage>().HasData(
+            new ProductImage {Id = 1, ProductId = 1, ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", IsActive = true},
+            new ProductImage {Id = 2, ProductId = 2, ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png", IsActive = true}
+        );
     }
 }
