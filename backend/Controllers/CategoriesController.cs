@@ -34,6 +34,19 @@ public class CategoriesController : ControllerBase
         }
         return category;
     }
+
+    [HttpGet("category/{categorySlug}")]
+    public async Task<ActionResult<IEnumerable<Product>>> GetProductsByCategory(string categorySlug)
+    {
+        var category = await _context.Categories
+            .FirstOrDefaultAsync(c => c.Slug == categorySlug);
+        
+        var products = await _context.Products
+            .Where(p => p.CategoryId == category.Id)
+            .ToListAsync();
+ 
+        return Ok(products);
+    }
     
     // POST: api/Categories
     [HttpPost]
