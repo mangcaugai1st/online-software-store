@@ -30,6 +30,10 @@ public class Product
     [Required]
     public int StockQuantity { get; set; } // stock quantity 
     
+    [Required]
+    [MaxLength(250)] 
+    public string? Slug { get; set; }
+    
     public bool IsActive { get; set; }  // Product active
 
     [DataType(DataType.DateTime)]

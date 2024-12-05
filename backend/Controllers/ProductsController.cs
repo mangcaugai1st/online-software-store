@@ -21,7 +21,7 @@ public class ProductsController : ControllerBase
     {
         return await _context.Products.ToListAsync();
     }
-    
+    // Categories/products 
     // GET: api/Products/{id} 
     [HttpGet("{id}")]
     public async Task<ActionResult<Product>> GetProduct(int id)

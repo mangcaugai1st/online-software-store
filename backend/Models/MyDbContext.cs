@@ -49,15 +49,6 @@ public class MyDbContext : DbContext
             .HasForeignKey(e => e.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
 
-        modelBuilder.Entity<Category>().HasData(
-            new Category { Id = 1, Name = "Giải trí", Description = "testest" },
-            new Category { Id = 2, Name = "Làm việc", Description = "testest" }
-        );
-        
-        modelBuilder.Entity<Product>().HasData(
-            new Product {Id = 1, Name = "Photoshop", Description = "photoshop", ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", StockQuantity = 100, IsActive = true, CategoryId = 2 },
-            new Product {Id = 2, Name = "Dota 2", Description = "Dota 2", ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png", StockQuantity = 100, IsActive = true, CategoryId = 1 }
-        );
-        
+
     }
 }
