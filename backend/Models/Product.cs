@@ -20,6 +20,10 @@ public class Product
     [Required]
     public decimal Price { get; set; } // Product's price
     
+    [Required]
+    [MaxLength(500)]
+    public string? ImagePath { get; set; } // Product's image
+        
     [MaxLength(1000000)]
     public string? Description { get; set; } // Product's description
    
@@ -34,6 +38,5 @@ public class Product
     [DataType(DataType.DateTime)]
     public DateTime UpdatedAt { get; set; } = DateTime.UtcNow;
     
-    public ICollection<ProductImage>? ProductImages { get; set; }
     public ICollection<OrderDetail>? OrderDetails { get; set; }
 }

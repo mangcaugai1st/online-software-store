@@ -7,7 +7,6 @@ public class MyDbContext : DbContext
     public MyDbContext(DbContextOptions<MyDbContext> options) : base(options) { }
 
     public DbSet<Product> Products { get; set; }
-    public DbSet<ProductImage> ProductImages { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Cart> Carts { get; set; }
@@ -21,7 +20,6 @@ public class MyDbContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
         
-        
         // Users - Orders: one-to-many
         modelBuilder.Entity<Order>()
             .HasOne(o => o.User)
@@ -29,14 +27,7 @@ public class MyDbContext : DbContext
             .HasForeignKey(o => o.UserId)
             .IsRequired()
             .OnDelete(DeleteBehavior.Restrict);
-
-        // Products - ProductImages: one-to-many
-        modelBuilder.Entity<ProductImage>()
-            .HasOne(p => p.Product)
-            .WithMany(p => p.ProductImages)
-            .HasForeignKey(p => p.ProductId)
-            .OnDelete(DeleteBehavior.Cascade);
-
+        
         // Orders - PaymentDetails: one-to-one
         modelBuilder.Entity<Order>()
             .HasOne(e => e.PaymentDetail)
@@ -64,13 +55,9 @@ public class MyDbContext : DbContext
         );
         
         modelBuilder.Entity<Product>().HasData(
-            new Product {Id = 1, Name = "Photoshop", Description = "photoshop", StockQuantity = 100, IsActive = true, CategoryId = 2 },
-            new Product {Id = 2, Name = "Dota 2", Description = "Dota 2", StockQuantity = 100, IsActive = true, CategoryId = 1 }
+            new Product {Id = 1, Name = "Photoshop", Description = "photoshop", ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", StockQuantity = 100, IsActive = true, CategoryId = 2 },
+            new Product {Id = 2, Name = "Dota 2", Description = "Dota 2", ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png", StockQuantity = 100, IsActive = true, CategoryId = 1 }
         );
-
-        modelBuilder.Entity<ProductImage>().HasData(
-            new ProductImage {Id = 1, ProductId = 1, ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", IsActive = true},
-            new ProductImage {Id = 2, ProductId = 2, ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png", IsActive = true}
-        );
+        
     }
 }

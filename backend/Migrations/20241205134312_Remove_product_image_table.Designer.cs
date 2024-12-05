@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -11,9 +12,11 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(MyDbContext))]
-    partial class MyDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241205134312_Remove_product_image_table")]
+    partial class Remove_product_image_table
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -103,20 +106,6 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Categories");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Description = "testest",
-                            Name = "Giải trí"
-                        },
-                        new
-                        {
-                            Id = 2,
-                            Description = "testest",
-                            Name = "Làm việc"
-                        });
                 });
 
             modelBuilder.Entity("backend.Models.Order", b =>
@@ -276,34 +265,6 @@ namespace backend.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 12, 5, 13, 44, 23, 439, DateTimeKind.Utc).AddTicks(4464),
-                            Description = "photoshop",
-                            ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
-                            IsActive = true,
-                            Name = "Photoshop",
-                            Price = 0m,
-                            StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 5, 13, 44, 23, 439, DateTimeKind.Utc).AddTicks(4468)
-                        },
-                        new
-                        {
-                            Id = 2,
-                            CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 12, 5, 13, 44, 23, 439, DateTimeKind.Utc).AddTicks(4474),
-                            Description = "Dota 2",
-                            ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
-                            IsActive = true,
-                            Name = "Dota 2",
-                            Price = 0m,
-                            StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 5, 13, 44, 23, 439, DateTimeKind.Utc).AddTicks(4474)
-                        });
                 });
 
             modelBuilder.Entity("backend.Models.Review", b =>
