@@ -9,6 +9,7 @@ import {Category} from '../models/category.model'
 export class CategoryService {
 
   private apiUrl = environment.apiUrl + "categories";
+
   constructor(private http: HttpClient) { }
 
   getCategories()
