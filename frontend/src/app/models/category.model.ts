@@ -12,7 +12,7 @@
 
 export interface Category {
   id: number;
-  name: string;
-  slug: string;
-  description: string;
+  name: string | null;
+  slug: string | null;
+  description: string | null;
 }
