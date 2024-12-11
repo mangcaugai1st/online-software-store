@@ -3,13 +3,15 @@ import {Category} from '../../../../models/category.model'
 import {CategoryService} from '../../../../services/category.service'
 import {NgForOf} from '@angular/common';
 import {HttpClientModule} from '@angular/common/http';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-categories',
   standalone: true,
   imports: [
     NgForOf,
-    HttpClientModule
+    HttpClientModule,
+    RouterLink
   ],
   templateUrl: './categories.component.html',
   styleUrl: './categories.component.css'
