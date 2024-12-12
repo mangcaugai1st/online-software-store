@@ -8,12 +8,12 @@ import {Category} from '../models/category.model'
 })
 export class CategoryService {
 
-  private apiUrl = environment.apiUrl + "categories";
+  private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
 
   getCategories()
   {
-    return this.http.get<Category[]>(this.apiUrl);
+    return this.http.get<Category[]>(`${this.apiUrl}categories`);
   }
 }
