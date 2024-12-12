@@ -33,4 +33,16 @@ public class ProductsController : ControllerBase
         }
         return product;
     }
+    
+    // GET: api/products/product/{slug}
+    [HttpGet("product/{productSlug}")]
+    public async Task<ActionResult<Product>> GetDetailProduct(string productSlug)
+    {
+        var product = await _context.Products.Where(p => p.Slug == productSlug).FirstOrDefaultAsync();
+        if (product == null)
+        {
+            return NotFound();
+        }
+        return product;
+    }
 }
