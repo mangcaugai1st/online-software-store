@@ -1,4 +1,5 @@
 import {Category} from "./category.model"
+import {OrderDetail} from "./orderDetail.model"
 
 export interface Product {
   id: number;
@@ -13,5 +14,5 @@ export interface Product {
   isActive: boolean;
   createdAt: string;
   updatedAt: string;
-  // orderDetails: OrderDetail[] | null;
+  orderDetails: OrderDetail[] | null;
 }
