@@ -61,9 +61,13 @@ public class MyDbContext : DbContext
         );
         
         modelBuilder.Entity<Product>().HasData(
-            new Product {Id = 1, Name = "Photoshop", Slug = "photoshop", Description = "photoshop", ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", StockQuantity = 100, IsActive = true, CategoryId = 2 },
-            new Product {Id = 2, Name = "Dota 2", Slug = "dota2", Description = "Dota 2", ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png", StockQuantity = 100, IsActive = true, CategoryId = 1 }
+            new Product {Id = 1, Name = "Photoshop", Price = 1000000, Slug = "photoshop", Description = "photoshop", ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", StockQuantity = 100, IsActive = true, CategoryId = 2 },
+            new Product {Id = 2, Name = "Dota 2", Price = 100000, Slug = "dota2", Description = "Dota 2", ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png", StockQuantity = 100, IsActive = true, CategoryId = 1 }
         );
 
+        modelBuilder.Entity<User>().HasData(
+            new User {Id = 1, Username = "admin", Password = "AdminPassword", Email = "admin@example.com", Phone = "0123456789", IsAdmin = true, IsActive = true},
+            new User {Id = 2, Username = "user", Password = "UserPassword", Email = "user@example.com", Phone = "0123456789", IsAdmin = false, IsActive = true}
+        );
     }
 }
