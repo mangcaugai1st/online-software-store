@@ -45,4 +45,19 @@ public class ProductsController : ControllerBase
         }
         return product;
     }
+
+    [HttpDelete("[action]/{productId}")] /* api/products/deleteproduct/{productId} */
+    public async Task<ActionResult<Product>> DeleteProduct(int productId)
+    {
+        var product = await _context.Products.FindAsync(productId);
+        if (product == null)
+        {
+            return NotFound(); // Output 404 when product not found 
+        }
+
+        _context.Products.Remove(product); // Delete product
+        await _context.SaveChangesAsync(); // Save changes in database 
+
+        return NoContent(); // Return HTTP 204 if product delete successful
+    }
 }
