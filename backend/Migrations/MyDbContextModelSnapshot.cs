@@ -297,29 +297,29 @@ namespace backend.Migrations
                         {
                             Id = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 12, 5, 15, 20, 57, 382, DateTimeKind.Utc).AddTicks(1745),
+                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2962),
                             Description = "photoshop",
                             ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
                             IsActive = true,
                             Name = "Photoshop",
-                            Price = 0m,
+                            Price = 1000000m,
                             Slug = "photoshop",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 5, 15, 20, 57, 382, DateTimeKind.Utc).AddTicks(1748)
+                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2967)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 12, 5, 15, 20, 57, 382, DateTimeKind.Utc).AddTicks(1756),
+                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2976),
                             Description = "Dota 2",
                             ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
                             IsActive = true,
                             Name = "Dota 2",
-                            Price = 0m,
+                            Price = 100000m,
                             Slug = "dota2",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 5, 15, 20, 57, 382, DateTimeKind.Utc).AddTicks(1756)
+                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2977)
                         });
                 });
 
@@ -380,8 +380,8 @@ namespace backend.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -399,6 +399,32 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3036),
+                            Email = "admin@example.com",
+                            IsActive = true,
+                            IsAdmin = true,
+                            Password = "AdminPassword",
+                            Phone = "0123456789",
+                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3037),
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3043),
+                            Email = "user@example.com",
+                            IsActive = true,
+                            IsAdmin = false,
+                            Password = "UserPassword",
+                            Phone = "0123456789",
+                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3044),
+                            Username = "user"
+                        });
                 });
 
             modelBuilder.Entity("backend.Models.Address", b =>
