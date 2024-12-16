@@ -14,7 +14,7 @@ public class User
     public string? Username { get; set; } // username 
   
     [Required]
-    [MaxLength(10)]
+    [MaxLength(18)]
     public string? Password { get; set; }
    
     [Required] 
