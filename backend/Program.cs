@@ -17,7 +17,7 @@ builder.Services.AddControllers();
 
 // Register the database context
 // DB context must be registered with the dependency injection (DI) container. The container provides the service to controllers.
-builder.Services.AddDbContext<MyDbContext>(opt=>
+builder.Services.AddDbContext<ApplicationDbContext>(opt=>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("MyDB")));
 
 // Cấu hình Authentication
@@ -68,8 +68,6 @@ app.UseHttpsRedirection();
 
 // Authentication -> Authorization
 app.UseAuthentication();
-
-app.UseAuthorization();
 
 app.UseAuthorization();
 
