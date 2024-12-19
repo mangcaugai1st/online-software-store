@@ -3,7 +3,6 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -11,12 +10,10 @@ using backend.Models;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
-    [Migration("20241216031423_Seed_data_for_User_table")]
-    partial class Seed_data_for_User_table
+    [DbContext(typeof(ApplicationDbContext))]
+    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
     {
-        /// <inheritdoc />
-        protected override void BuildTargetModel(ModelBuilder modelBuilder)
+        protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -300,7 +297,7 @@ namespace backend.Migrations
                         {
                             Id = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2962),
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8692),
                             Description = "photoshop",
                             ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
                             IsActive = true,
@@ -308,13 +305,13 @@ namespace backend.Migrations
                             Price = 1000000m,
                             Slug = "photoshop",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2967)
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8695)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2976),
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708),
                             Description = "Dota 2",
                             ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
                             IsActive = true,
@@ -322,7 +319,7 @@ namespace backend.Migrations
                             Price = 100000m,
                             Slug = "dota2",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(2977)
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708)
                         });
                 });
 
@@ -407,25 +404,25 @@ namespace backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3036),
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8735),
                             Email = "admin@example.com",
                             IsActive = true,
                             IsAdmin = true,
                             Password = "AdminPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3037),
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8736),
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3043),
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740),
                             Email = "user@example.com",
                             IsActive = true,
                             IsAdmin = false,
                             Password = "UserPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2024, 12, 16, 3, 14, 20, 411, DateTimeKind.Utc).AddTicks(3044),
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740),
                             Username = "user"
                         });
                 });

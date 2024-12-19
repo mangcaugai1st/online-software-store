@@ -11,9 +11,9 @@ using backend.Models;
 
 namespace backend.Migrations
 {
-    [DbContext(typeof(MyDbContext))]
-    [Migration("20241205134312_Remove_product_image_table")]
-    partial class Remove_product_image_table
+    [DbContext(typeof(ApplicationDbContext))]
+    [Migration("20241218235640_Seed data")]
+    partial class Seeddata
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -103,9 +103,33 @@ namespace backend.Migrations
                         .HasMaxLength(50)
                         .HasColumnType("nvarchar(50)");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.HasKey("Id");
 
+                    b.HasIndex("Slug")
+                        .IsUnique();
+
                     b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "testest",
+                            Name = "Giải trí",
+                            Slug = "giai_tri"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "testest",
+                            Name = "Làm việc",
+                            Slug = "lam_viec"
+                        });
                 });
 
             modelBuilder.Entity("backend.Models.Order", b =>
@@ -254,6 +278,11 @@ namespace backend.Migrations
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<string>("Slug")
+                        .IsRequired()
+                        .HasMaxLength(250)
+                        .HasColumnType("nvarchar(250)");
+
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
@@ -265,6 +294,36 @@ namespace backend.Migrations
                     b.HasIndex("CategoryId");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 2,
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8692),
+                            Description = "photoshop",
+                            ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
+                            IsActive = true,
+                            Name = "Photoshop",
+                            Price = 1000000m,
+                            Slug = "photoshop",
+                            StockQuantity = 100,
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8695)
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708),
+                            Description = "Dota 2",
+                            ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
+                            IsActive = true,
+                            Name = "Dota 2",
+                            Price = 100000m,
+                            Slug = "dota2",
+                            StockQuantity = 100,
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708)
+                        });
                 });
 
             modelBuilder.Entity("backend.Models.Review", b =>
@@ -324,8 +383,8 @@ namespace backend.Migrations
 
                     b.Property<string>("Password")
                         .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("nvarchar(10)");
+                        .HasMaxLength(18)
+                        .HasColumnType("nvarchar(18)");
 
                     b.Property<string>("Phone")
                         .IsRequired()
@@ -343,6 +402,32 @@ namespace backend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8735),
+                            Email = "admin@example.com",
+                            IsActive = true,
+                            IsAdmin = true,
+                            Password = "AdminPassword",
+                            Phone = "0123456789",
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8736),
+                            Username = "admin"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740),
+                            Email = "user@example.com",
+                            IsActive = true,
+                            IsAdmin = false,
+                            Password = "UserPassword",
+                            Phone = "0123456789",
+                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740),
+                            Username = "user"
+                        });
                 });
 
             modelBuilder.Entity("backend.Models.Address", b =>
