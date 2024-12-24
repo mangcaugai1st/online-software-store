@@ -32,7 +32,7 @@ export class LoginFormComponent {
       })
   }
 
-  get f() { return this.loginForm.controls; }
+  // get f() { return this.loginForm.controls; }
 
   onSubmit() {
     if (this.loginForm.valid) {
@@ -42,9 +42,9 @@ export class LoginFormComponent {
       this.authService.loginHandler(this.loginForm.value).subscribe({
         next: (response) => {
           localStorage.setItem('token', response.token);
+          // localStorage.setItem('username', response.username);
           this.router.navigate(['']);
           this.successMessage = 'Đăng nhập thành công';
-          console.log('Đăng nhập thành công:',response);
         },
         error: (error) => {
           this.errorMessage = "Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.";
