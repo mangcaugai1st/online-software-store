@@ -24,7 +24,6 @@ import {jwtDecode} from 'jwt-decode';
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-
   searchText: string = '';
   products: Product[] = [];
   username?: string;
