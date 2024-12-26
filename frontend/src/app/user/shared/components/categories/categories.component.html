@@ -6,7 +6,7 @@
   <div class="mt-4">
     <ul class="mt-2">
       <li *ngFor="let category of categories">
-        <a [routerLink]="category.slug"
+        <a [routerLink]="['/',category.slug]"
            class="text-black hover:text-blue-600 text-[15px] block hover:bg-blue-50 rounded px-4 py-2.5 transition-all">
           {{category.name}}
         </a>
