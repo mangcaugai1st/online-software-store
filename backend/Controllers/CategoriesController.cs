@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,20 +9,30 @@ namespace backend.Controllers;
 [Route("api/[controller]")] 
 public class CategoriesController : ControllerBase
 {
-    private readonly MyDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public CategoriesController(MyDbContext context)
+    public CategoriesController(ApplicationDbContext context)
     {
         _context = context;
     }
 
     // GET: api/Categories
     [HttpGet]
+    // public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
+    // {
+    //     return await _context.Categories.Select(c => new CategoryDto
+    //     {
+    //         Id = c.Id,
+    //         Name = c.Name, 
+    //         Slug = c.Slug, 
+    //         Description = c.Description,
+    //     }).ToListAsync();
+    // }
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
-        return await _context.Categories.ToListAsync();
+        return await _context.Categories.ToListAsync();     
     }
-
+    
     // GET: api/Categories/{id}
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategory(int id)
