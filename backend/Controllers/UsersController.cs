@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -8,18 +9,25 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class UsersController : ControllerBase
 {
-   private readonly MyDbContext _context;
+   private readonly ApplicationDbContext _context;
 
-   public UsersController(MyDbContext context)
+   public UsersController(ApplicationDbContext context)
    {
       _context = context;
    }
    
    // GET: api/Users
    [HttpGet]
-   public async Task<ActionResult<IEnumerable<User>>> GetUsers()
+   public async Task<ActionResult<IEnumerable<UserDto>>> GetUsers()
    {
-      return await _context.Users.ToListAsync();
+      return await _context.Users.Select(u => new UserDto
+      {
+         Id = u.Id, 
+         Username = u.Username,
+         Password = u.Password,
+         Email = u.Email,
+         Phone = u.Phone,
+      }).ToListAsync();
    }
   
    // GET: api/Users/{id}

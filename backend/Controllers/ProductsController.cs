@@ -8,9 +8,9 @@ namespace backend.Controllers;
 [Route("api/[controller]")]
 public class ProductsController : ControllerBase
 {
-    private readonly MyDbContext _context;
+    private readonly ApplicationDbContext _context;
 
-    public ProductsController(MyDbContext context)
+    public ProductsController(ApplicationDbContext context)
     {
         _context = context;
     }
