@@ -20,5 +20,49 @@
 <!--  </footer>-->
 <!--</div>-->
 
-<app-user *ngIf="!isAdmin"></app-user>
-<app-admin *ngIf="isAdmin"></app-admin>
+<!--<ng-container *ngIf="!isAdmin">-->
+<!--  <app-user></app-user>-->
+<!--</ng-container>-->
+
+<!--<ng-container *ngIf="isAdmin">-->
+<!--  <app-admin></app-admin>-->
+<!--</ng-container>-->
+
+<!--<header>-->
+<!--  <nav>-->
+<!--    <span>Welcome {{ username }}</span>-->
+<!--    <ng-container *ngIf="isAdmin">-->
+<!--      <a routerLink="/admin/dashboard">Admin Dashboard</a>-->
+<!--      <a routerLink="/admin/users">Manage Users</a>-->
+<!--    </ng-container>-->
+<!--    <ng-container *ngIf="!isAdmin">-->
+<!--      <a routerLink="/user/profile">My Profile</a>-->
+<!--      <a routerLink="/user/orders">My Orders</a>-->
+<!--    </ng-container>-->
+<!--    <button (click)="logout()">Logout</button>-->
+<!--  </nav>-->
+<!--</header>-->
+
+<div *ngIf="!isAdmin">
+  <div class="container mx-auto flex flex-col h-screen">
+    <header>
+      <app-header></app-header>
+    </header>
+    <div class="mb-auto">
+      <router-outlet />
+    </div>
+    <footer>
+      <app-footer></app-footer>
+    </footer>
+  </div>
+</div>
+
+<div *ngIf="isAdmin">
+  <div>
+    <app-admin-sidebar></app-admin-sidebar>
+  </div>
+  <div>
+    <app-admin-header></app-admin-header>
+    <router-outlet />
+  </div>
+</div>
