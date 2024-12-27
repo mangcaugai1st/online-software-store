@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import { RouterOutlet } from '@angular/router';
+import {RouterLink, RouterOutlet} from '@angular/router';
 import {NgxSpinnerComponent, NgxSpinnerService} from 'ngx-spinner';
 import {HeaderComponent} from './user/shared/components/header/header.component';
 import {FooterComponent} from './user/shared/components/footer/footer.component';
@@ -9,6 +9,7 @@ import {AuthService} from './services/auth.service';
 import {NgIf} from '@angular/common';
 import {UserComponent} from './user/user.component'
 import {AdminComponent} from './admin/admin.component'
+import {AdminSidebarComponent} from './admin/shared/admin-sidebar/admin-sidebar.component';
 
 @Component({
   selector: 'app-root',
@@ -22,6 +23,8 @@ import {AdminComponent} from './admin/admin.component'
     UserComponent,
     AdminComponent,
     NgIf,
+    RouterLink,
+    AdminSidebarComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
