@@ -40,12 +40,12 @@ export const routes: Routes = [
   //   ]
   // },
 
-  { path: 'admin', component: AdminComponent,
+  { path: 'admin', component: AdminComponent, canActivate:[adminGuard],
     // canActivate: [adminGuard],
     children: [
-      { path: 'dashboard', component: DashboardComponent },
-      { path: 'products', component: ProductsAdminComponent },
-      { path: 'categories', component: CategoriesAdminComponent},
+      { path: 'dashboard', component: DashboardComponent, canActivate:[adminGuard] },
+      { path: 'products', component: ProductsAdminComponent, canActivate:[adminGuard] },
+      { path: 'categories', component: CategoriesAdminComponent, canActivate:[adminGuard]},
       // { path: 'users', component: AdminUsersComponent },
     ]
   },

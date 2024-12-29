@@ -57,12 +57,16 @@
   </div>
 </div>
 
-<div *ngIf="isAdmin">
-  <div>
+<div *ngIf="isAdmin" class="flex">
+  <div class="w-1/6">
     <app-admin-sidebar></app-admin-sidebar>
   </div>
-  <div>
-    <app-admin-header></app-admin-header>
-    <router-outlet />
+  <div class="w-5/6 flex flex-col">
+    <div class="p-4">
+      <app-admin-header></app-admin-header>
+    </div>
+    <main>
+      <router-outlet/>
+    </main>
   </div>
 </div>
