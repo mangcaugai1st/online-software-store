@@ -60,6 +60,14 @@ export class AuthService {
     return false;
   }
 
+  isUser(): boolean {
+    const token: any  = localStorage.getItem('token');
+    const decodedToken: any = jwtDecode<JwtPayload>(token);
+    const userRole: string = decodedToken.role;
+
+    if (userRole == "False") {return true}
+    return false;
+  }
   // Xoá toàn bộ thông tin đã đăng nhập
   logoutHandler() {
     localStorage.removeItem('token'); // Xoá token
