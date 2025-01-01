@@ -1,5 +1,6 @@
 using backend.Models;
 using backend.Models.DTOs;
+using backend.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -10,7 +11,8 @@ namespace backend.Controllers;
 public class CategoriesController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
-
+    private readonly ICategoryService _categoryService;
+    
     public CategoriesController(ApplicationDbContext context)
     {
         _context = context;
@@ -61,12 +63,23 @@ public class CategoriesController : ControllerBase
     
     // POST: api/Categories
     [HttpPost]
-    public async Task<ActionResult<Category>> CreateCategory(Category category)
+    public async Task<ActionResult<Category>> AddCategory([FromBody] CategoryDto categoryDto)
     {
-        _context.Categories.Add(category); 
-        await _context.SaveChangesAsync();
-        
-        return CreatedAtAction(nameof(GetCategory), new { id = category.Id }, category);
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            var newCategory = await _categoryService.AddCategoryAsync(categoryDto);
+            // CreatedAtAction(string? actionName, object? value);
+            return CreatedAtAction(nameof(GetCategory), new {id = categoryDto.Id}, newCategory);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new {message = "Có lỗi xảy ra khi thêm danh mục: " + ex.Message});
+        }
     }
 
     [HttpPut("{id}")]
@@ -100,14 +113,11 @@ public class CategoriesController : ControllerBase
     [HttpDelete("{id}")]
     public async Task<IActionResult> DeleteCategory(int id)
     {
-        var category = await _context.Categories.FindAsync(id);
-        if (category == null)
+        var selectedCategory = await _categoryService.DeleteCategoryAsync(id);
+        if (!selectedCategory)
         {
-            return NotFound();
+            return NotFound($"Không tìm thấy danh mục {id}");
         }
-        
-        _context.Categories.Remove(category);
-        await _context.SaveChangesAsync();
         
         return NoContent();
     }

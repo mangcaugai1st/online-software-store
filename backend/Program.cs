@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using backend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens;
+using backend.Services;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -19,6 +20,8 @@ builder.Services.AddControllers();
 // DB context must be registered with the dependency injection (DI) container. The container provides the service to controllers.
 builder.Services.AddDbContext<ApplicationDbContext>(opt=>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("MyDB")));
+
+builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Cấu hình Authentication
 // var tokenConfig = Configuration.GetSection("TokenConfig").Get<TokenConfig>();
