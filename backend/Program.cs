@@ -21,6 +21,7 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContext>(opt=>
     opt.UseSqlServer(builder.Configuration.GetConnectionString("MyDB")));
 
+// Đăng ký service 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
 
 // Cấu hình Authentication

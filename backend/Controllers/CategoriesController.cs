@@ -1,3 +1,4 @@
+using System.Runtime.InteropServices.JavaScript;
 using backend.Models;
 using backend.Models.DTOs;
 using backend.Services;
@@ -13,11 +14,17 @@ public class CategoriesController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly ICategoryService _categoryService;
     
-    public CategoriesController(ApplicationDbContext context)
+    // public CategoriesController(ApplicationDbContext context)
+    // {
+    //     _context = context;
+    // }
+    
+    public CategoriesController(ICategoryService categoryService, ApplicationDbContext context)
     {
+        _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         _context = context;
     }
-
+    
     // GET: api/Categories
     [HttpGet]
     // public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
@@ -32,20 +39,23 @@ public class CategoriesController : ControllerBase
     // }
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
-        return await _context.Categories.ToListAsync();     
+        // return await _context.Categories.ToListAsync();
+        var categories = await _categoryService.GetAllCategoriesAsync();
+        
+        return Ok(categories);
     }
-    
+
     // GET: api/Categories/{id}
     [HttpGet("{id}")]
-    public async Task<ActionResult<Category>> GetCategory(int id)
+    public async Task<ActionResult<Category>> GetCategoryById(int id)
     {
-        var category = await _context.Categories.FindAsync(id);
+        var category = await _categoryService.GetCategoryByIdAsync(id);
 
         if (category == null)
         {
             return NotFound();
         }
-        return category;
+        return Ok(category);
     }
 
     [HttpGet("category/{categorySlug}")]
@@ -65,6 +75,11 @@ public class CategoriesController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Category>> AddCategory([FromBody] CategoryDto categoryDto)
     {
+        if (categoryDto == null)
+        {
+            return BadRequest("Category data is required.");
+        }
+        
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
@@ -72,9 +87,10 @@ public class CategoriesController : ControllerBase
 
         try
         {
-            var newCategory = await _categoryService.AddCategoryAsync(categoryDto);
-            // CreatedAtAction(string? actionName, object? value);
-            return CreatedAtAction(nameof(GetCategory), new {id = categoryDto.Id}, newCategory);
+            var createdCategory = await _categoryService.AddCategoryAsync(categoryDto);
+
+            // return CreatedAtAction(nameof(GetCategoryById), new { id = createdCategory.Id }, createdCategory);
+            return Ok();
         }
         catch (Exception ex)
         {
@@ -127,3 +143,12 @@ public class CategoriesController : ControllerBase
         return _context.Categories.Any(e => e.Id == id);
     }
 }
+
+// nameof(GetCategory): Tham số đầu tiên chỉ định tên action method sẽ được sử dụng tạo URL
+// nameof: là một operator trong c# trả về tên của method dưới dạng string.
+            // CreatedAtAction(string? actionName, object? value);
+            // Lambda expression: (input-parameters) => expression
+            // Ex:
+            // int[] numbers = {2,3,4,5};
+            // var squaredNumbers = numbers.Select(x => x * x); 
+            // Console.WriteLine(string.Join(" ", squaredNumbers));
