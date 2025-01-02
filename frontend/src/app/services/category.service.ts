@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {environment} from '../../environments/environment'
 import {Category} from '../models/category.model'
 
@@ -15,5 +15,21 @@ export class CategoryService {
   getCategories()
   {
     return this.http.get<Category[]>(`${this.apiUrl}categories`);
+  }
+
+  // Thêm mới danh mục sản phẩm
+  addNewCategory(category: Category)
+  {
+    // return this.http.post<Category>(`${this.apiUrl}categories`, category, {
+    //   headers: new HttpHeaders({
+    //     'Content-Type': 'application/json'
+    //   })
+    // });
+    return this.http.post<Category>(`${this.apiUrl}categories`, category);
+  }
+
+  // Xóa danh mục
+  deleteCategory(categoryId: number) {
+    return this.http.delete(`${this.apiUrl}categories/`+ categoryId);
   }
 }
