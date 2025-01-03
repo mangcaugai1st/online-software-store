@@ -4,12 +4,12 @@ import {NgxSpinnerComponent, NgxSpinnerService} from 'ngx-spinner';
 import {HeaderComponent} from './user/shared/components/header/header.component';
 import {FooterComponent} from './user/shared/components/footer/footer.component';
 import {AdminHeaderComponent} from './admin/shared/admin-header/admin-header.component';
-// import {BrowserAnimationsModule, NoopAnimationsModule} from '@angular/platform-browser/animations';
 import {AuthService} from './services/auth.service';
 import {NgIf} from '@angular/common';
-import {UserComponent} from './user/user.component'
-import {AdminComponent} from './admin/admin.component'
+import {UserComponent} from './user/user.component';
+import {AdminComponent} from './admin/admin.component';
 import {AdminSidebarComponent} from './admin/shared/admin-sidebar/admin-sidebar.component';
+
 
 @Component({
   selector: 'app-root',

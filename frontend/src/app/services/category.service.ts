@@ -6,8 +6,8 @@ import {Category} from '../models/category.model'
 @Injectable({
   providedIn: 'root'
 })
-export class CategoryService {
 
+export class CategoryService {
   private apiUrl = environment.apiUrl;
 
   constructor(private http: HttpClient) { }
@@ -26,6 +26,12 @@ export class CategoryService {
     //   })
     // });
     return this.http.post<Category>(`${this.apiUrl}categories`, category);
+  }
+
+  // Cập nhật danh mục
+  updateExistedCategory(category: Category)
+  {
+    return this.http.put<Category>(`${this.apiUrl}categories/` + category.id, category);
   }
 
   // Xóa danh mục

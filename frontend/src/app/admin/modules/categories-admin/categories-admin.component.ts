@@ -1,9 +1,9 @@
 import {Component, OnInit} from '@angular/core';
-import {CategoryService} from '../../../services/category.service'
-import {Category} from '../../../models/category.model';
-import {NgForOf, NgIf} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-
+import { CategoryService } from '../../../services/category.service'
+import { Category } from '../../../models/category.model';
+import { NgForOf, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import {  } from '../../shared/create-new-category-form'
 
 @Component({
   selector: 'app-categories-admin',
@@ -11,13 +11,18 @@ import {FormsModule} from '@angular/forms';
   imports: [
     NgForOf,
     NgIf,
-    FormsModule
+    FormsModule,
   ],
   templateUrl: './categories-admin.component.html',
   styleUrl: './categories-admin.component.css'
 })
 export class CategoriesAdminComponent implements OnInit {
   categories: Array<Category> = [];
+  selectedCategory: Category | null = null; // Id danh mục chọn để xóa
+  isVisible: boolean = false;
+  isVisible1: boolean = false;
+  isUpdateCategoryModalVisible: boolean = false;
+
   // category: Category = {
   //   id : 0,
   //   name: "",
@@ -32,42 +37,42 @@ export class CategoriesAdminComponent implements OnInit {
     slug: string | null;
   }
 
-  isVisible: boolean = false;
-  isVisible1: boolean = false;
-
-  constructor(private categoryService: CategoryService) { }
+  constructor (private categoryService: CategoryService) { }
 
   ngOnInit() {
     this.GetCategories();
-
-    this.openModal();
-    this.closeModal();
-
-    this.openConfirmModal();
-    this.closeConfirmModal();
-
-    this.onSubmit();
-  }
-
-  onSubmit(): void {
-    this.categoryService.addNewCategory(this.categoryy).subscribe(
-      response => {
-        console.log('Danh mục sản phẩm mới được thêm thành công ', response);
-      },
-      error => {
-        console.log('Có lỗi xảy ra khi thêm danh mục sản phẩm ', error);
-      }
-    )
   }
 
   confirmDeleteCategory(id: number)
   {
     console.log(id);
+    // this.categoryService.deleteCategory(id).subscribe(
+    //   response => {
+    //     console.log('Đã xóa thành công ', response);
+    //   },
+    //   error => {
+    //     console.log('Xóa không thành công ', error);
+    //   }
+    // )
     this.categoryService.deleteCategory(id).subscribe(
-      response => {
-        console.log(response);
+      () => {
+        this.categories = this.categories.filter(category => category.id !== id);
+        this.closeConfirmModal();
       },
       error => {
+        console.log('Xóa không thành công ', error);
+      }
+    )
+  }
+
+  saveChanges() {
+    this.categoryService.updateExistedCategory(this.categoryy).subscribe(
+      (saveChanges) => {
+        alert('Cập nhật danh mục thành công!');
+        // Cập nhật lại danh mục nếu thành công
+        this.categoryy = saveChanges;
+      },
+      (error) => {
         console.log(error);
       }
     )
@@ -79,23 +84,24 @@ export class CategoriesAdminComponent implements OnInit {
       error : error => console.log(error)
     })
   }
-  // Mở modal
-  openModal() {
-    this.isVisible = true;
-  }
 
-  // Đóng modal
-  closeModal() {
-    this.isVisible = false;
-  }
-
-  openConfirmModal()
+  openConfirmModal(category: Category)
   {
+    this.selectedCategory = category;
     this.isVisible1 = true;
   }
 
   closeConfirmModal() {
     this.isVisible1 = false;
+    this.selectedCategory = null;
+  }
+
+  openUpdateCategoryModal() {
+    this.isUpdateCategoryModalVisible = true;
+  }
+
+  closeUpdateCategoryModal() {
+    this.isUpdateCategoryModalVisible = false;
   }
 
   protected readonly close = close;
