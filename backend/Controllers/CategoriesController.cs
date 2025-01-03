@@ -99,31 +99,26 @@ public class CategoriesController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public async Task<IActionResult> UpdateCategory(int id, Category category)
+    public async Task<IActionResult> UpdateCategory(int id, [FromBody] CategoryDto categoryDto)
     {
-        if (id != category.Id)
+        if (categoryDto == null)
         {
-            return BadRequest();
+            return BadRequest("Dữ liệu không được để trống");
         }
-        
-        _context.Entry(category).State = EntityState.Modified;
 
         try
-        { 
-            await _context.SaveChangesAsync();
+        {
+            var updatedCategory = await _categoryService.UpdateCategoryAsync(id, categoryDto);
+            return Ok(updatedCategory); // trả về đối tượng danh mục đã cập nhật 
         }
-        catch (DbUpdateConcurrencyException)
-        { 
-            if (!CategoryExists(id))
-            {
-               return NotFound(); 
-            }
-            else
-            { 
-                throw;
-            }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message); // trả về lỗi 404 nếu không tìm thấy danh mục
         }
-        return NoContent(); 
+        catch (Exception ex)
+        {
+            return StatusCode(500, new {message = ex.Message}); // trả về lỗi server
+        }
     }
 
     [HttpDelete("{id}")]
@@ -146,9 +141,14 @@ public class CategoriesController : ControllerBase
 
 // nameof(GetCategory): Tham số đầu tiên chỉ định tên action method sẽ được sử dụng tạo URL
 // nameof: là một operator trong c# trả về tên của method dưới dạng string.
-            // CreatedAtAction(string? actionName, object? value);
-            // Lambda expression: (input-parameters) => expression
-            // Ex:
-            // int[] numbers = {2,3,4,5};
-            // var squaredNumbers = numbers.Select(x => x * x); 
-            // Console.WriteLine(string.Join(" ", squaredNumbers));
+// CreatedAtAction(string? actionName, object? value);
+// Lambda expression: (input-parameters) => expression
+
+// Ex:
+// int[] numbers = {2,3,4,5};
+// var squaredNumbers = numbers.Select(x => x * x); 
+// Console.WriteLine(string.Join(" ", squaredNumbers));
+
+// BadRequest: trả về lỗi 400 (null)
+// NotFound: trả về lỗi 404 (Not Found)
+// Internal Server Error: trả về lỗi 500 (lỗi khác trong quá trình xử lý)
