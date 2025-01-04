@@ -1,9 +1,22 @@
-<div id="{{category.id}}"
-     *ngIf="isVisible1"
+<button
+  (click)="openModal()"
+  class="mr-4" title="Delete"
+>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-5 fill-red-500 hover:fill-red-700" viewBox="0 0 24 24">
+    <path
+      d="M19 7a1 1 0 0 0-1 1v11.191A1.92 1.92 0 0 1 15.99 21H8.01A1.92 1.92 0 0 1 6 19.191V8a1 1 0 0 0-2 0v11.191A3.918 3.918 0 0 0 8.01 23h7.98A3.918 3.918 0 0 0 20 19.191V8a1 1 0 0 0-1-1Zm1-3h-4V2a1 1 0 0 0-1-1H9a1 1 0 0 0-1 1v2H4a1 1 0 0 0 0 2h16a1 1 0 0 0 0-2ZM10 4V3h4v1Z"
+      data-original="#000000" />
+    <path d="M11 17v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Zm4 0v-7a1 1 0 0 0-2 0v7a1 1 0 0 0 2 0Z"
+          data-original="#000000" />
+  </svg>
+</button>
+
+<div
+     *ngIf="isVisible"
      class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto font-[sans-serif]"
 >
   <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-6 relative">
-    <svg (click)="closeConfirmModal()"
+    <svg (click)="closeModal()"
          xmlns="http://www.w3.org/2000/svg"
          class="w-3.5 cursor-pointer shrink-0 fill-gray-400 hover:fill-red-500 float-right" viewBox="0 0 320.591 320.591">
       <path
@@ -23,13 +36,13 @@
               data-original="#000000" />
       </svg>
       <h4 class="text-gray-800 text-base font-semibold mt-4">Bạn có chắc chắn muốn xóa? </h4>
-      <h4 class="text-gray-800 text-base font-semibold mt-4">#{{category.id}} - {{category.name}}</h4>
+      <h4 class="text-gray-800 text-base font-semibold mt-4">{{categoryId}}</h4>-->
 
       <div class="text-center space-x-4 mt-8">
-        <button (click)="closeConfirmModal()"
+        <button (click)="closeModal()"
                 type="button"
                 class="px-4 py-2 rounded-lg text-gray-800 text-sm bg-gray-200 hover:bg-gray-300 active:bg-gray-200">Hủy</button>
-        <button (click)="confirmDeleteCategory(category.id)" type="button"
+        <button (click)="confirmDeleteCategory()" type="button"
                 class="px-4 py-2 rounded-lg text-white text-sm bg-red-600 hover:bg-red-700 active:bg-red-600">Xoá</button>
       </div>
     </div>

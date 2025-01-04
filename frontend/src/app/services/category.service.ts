@@ -12,6 +12,7 @@ export class CategoryService {
 
   constructor(private http: HttpClient) { }
 
+  // Danh sách danh mục
   getCategories()
   {
     return this.http.get<Category[]>(`${this.apiUrl}categories`);
@@ -20,11 +21,6 @@ export class CategoryService {
   // Thêm mới danh mục sản phẩm
   addNewCategory(category: Category)
   {
-    // return this.http.post<Category>(`${this.apiUrl}categories`, category, {
-    //   headers: new HttpHeaders({
-    //     'Content-Type': 'application/json'
-    //   })
-    // });
     return this.http.post<Category>(`${this.apiUrl}categories`, category);
   }
 
