@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {FormBuilder, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {Category} from '../../../models/category.model';
 import { CategoryService } from '../../../services/category.service'
@@ -18,6 +18,7 @@ import { CategoryService } from '../../../services/category.service'
 export class CreateNewCategoryFormComponent {
   category: Category;
   isVisible: boolean = false;
+  createForm: FormGroup;
 
   // categoryy: Category = new class implements Category {
   //   description: string | null;
@@ -26,7 +27,16 @@ export class CreateNewCategoryFormComponent {
   //   slug: string | null;
   // }
 
-  constructor(private categoryService: CategoryService) { }
+  constructor(
+    private categoryService: CategoryService,
+    private formBuilder: FormBuilder
+  ) {
+    this.createForm = this.formBuilder.group({
+      name: ['', Validators.required],
+      slug: ['', Validators.required],
+      description: ['', Validators.required],
+    });
+  }
 
   openModal() {
     this.isVisible = true;
@@ -37,14 +47,14 @@ export class CreateNewCategoryFormComponent {
   }
 
   addNewCategory(): void {
-    this.categoryService.addNewCategory(this.category).subscribe(
-      response => {
-        console.log('Danh mục sản phẩm mới được thêm thành công ', response);
+    this.categoryService.addNewCategory(this.createForm.value).subscribe({
+      next: () => {
+        console.log("Thêm danh mục mới thành công: ");
         window.location.reload();
       },
-      error => {
-        console.log('Có lỗi xảy ra khi thêm danh mục sản phẩm ', error);
+      error: (error) => {
+        console.log('Thêm mới thất bại: ' + error);
       }
-    )
+    })
   }
 }

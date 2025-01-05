@@ -14,6 +14,7 @@ import {NgIf} from '@angular/common';
 })
 export class DeleteExistedCategoryComponent {
   @Input() categoryId: number;
+  @Input() categoryName: string;
   isVisible: boolean = false;
   category: Category;
 

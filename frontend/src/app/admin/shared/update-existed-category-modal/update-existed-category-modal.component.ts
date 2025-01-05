@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {FormGroup, FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {Component, Input} from '@angular/core';
+import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgIf} from "@angular/common";
 import {CategoryService} from '../../../services/category.service';
 import {Category} from '../../../models/category.model';
@@ -16,18 +16,24 @@ import {Category} from '../../../models/category.model';
   styleUrl: './update-existed-category-modal.component.css'
 })
 export class UpdateExistedCategoryModalComponent {
-  category: Category = new class implements Category {
-    id: number;
-    name: string | null;
-    description: string | null;
-    slug: string | null;
-  };
+  // category: Category = new class implements Category {
+  //   id: number;
+  //   name: string | null;
+  //   description: string | null;
+  //   slug: string | null;
+  // };
+  @Input() category: Category;
   isVisible: boolean  = false;
   updateForm: FormGroup
 
   constructor(
-    private categoryService: CategoryService
-  ) { }
+    private categoryService: CategoryService,
+    private formBuilder: FormBuilder
+  ) {
+      this.updateForm = this.formBuilder.group({
+        name: ['', Validators.required],
+      })
+  }
 
   openModal(): void {
     this.isVisible = true;
