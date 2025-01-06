@@ -12,7 +12,7 @@ public interface IProductService
     Task<Product?> GetProductDetailsBySlugNameAsync(string slugName);
     Task<Product> AddProductAsync(ProductDto productDto);
     Task<Product> UpdateProductAsync(int productId, ProductDto productDto);
-    Task<Product> DeleteProductAsync(int productId); 
+    Task<bool> DeleteProductAsync(int productId); 
 }
 public class ProductService : IProductService
 {
@@ -102,3 +102,6 @@ public class ProductService : IProductService
         return true;
     }
 }
+// IActionResult
+// Là một interface
+// Trả về nhiều loại kết quả khác từ một hành động trong controller.

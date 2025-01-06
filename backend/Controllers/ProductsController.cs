@@ -2,6 +2,8 @@ using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Services;
+using backend.Models.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace backend.Controllers;
 
@@ -70,19 +72,62 @@ public class ProductsController : ControllerBase
         }
         return productDetails;
     }
-    
-    [HttpDelete("[action]/{productId}")] 
-    public async Task<ActionResult<Product>> DeleteProduct(int productId)
+
+    [HttpPost]
+    public async Task<ActionResult<Product>> AddNewProduct([FromBody] ProductDto productDto)
     {
-        var product = await _context.Products.FindAsync(productId);
-        if (product == null)
+        if (productDto == null)
+        {
+            return BadRequest("Yêu cầu dữ liệu trong productDto.");
+        }
+
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState); 
+        }
+
+        try
+        {
+            var newProduct = await _productService.AddProductAsync(productDto);
+
+            return Ok();
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, new {message = "Có lỗi xảy ra khi thêm sản phẩm mới"});
+        }
+    }
+    
+    [HttpPut("product/{id}")] 
+    public async Task<ActionResult<Product>> UpdateProduct(int productId, [FromBody] ProductDto productDto)
+    {
+        if (productDto == null)
+        {
+            return BadRequest("Dữ liệu không được để trống");
+        }
+        try
+        {
+            var updatedProduct = await _productService.UpdateProductAsync(productId, productDto);
+            
+            return Ok(updatedProduct);
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(500, new { message = ex.Message });
+        }
+    }
+    [HttpDelete("{productId}")] 
+    public async Task<IActionResult> DeleteProduct(int productId)
+    {
+        var result = await _productService.DeleteProductAsync(productId);
+        if (!result)
         {
             return NotFound();
         }
-
-        _context.Products.Remove(product); // Delete product
-        await _context.SaveChangesAsync(); // Save changes in database 
-
-        return NoContent(); // Return HTTP 204 if product delete successful
+        
+        return NoContent(); 
     }
 }
+// IActionResult
+// Là một interface
+// Trả về nhiều loại kết quả khác từ một hành động trong controller.
