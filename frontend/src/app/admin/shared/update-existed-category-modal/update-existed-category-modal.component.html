@@ -28,10 +28,11 @@
 
     <div class="my-8 text-center"></div>
 
-    <form (ngSubmit)="saveChanges()"
+    <form (ngSubmit)="saveChanges()" [formGroup]="updateForm"
           class="space-y-4">
       <div class="relative flex items-center">
-        <input [(ngModel)]="category.name" name="name"
+        <input name="name"
+               formControlName="categoryName"
                type="text" placeholder="Nhập tên danh mục"
                class="px-4 py-3 bg-white text-gray-800 w-full text-sm border border-gray-300 focus:border-blue-600 outline-none rounded-lg" />
         <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-4"
@@ -53,7 +54,8 @@
       </div>
 
       <div class="relative flex items-center">
-        <input [(ngModel)]="category.slug" name="slug"
+        <input name="slug"
+               formControlName="categorySlug"
                type="text" placeholder="Nhập slug"
                class="px-4 py-3 bg-white text-gray-800 w-full text-sm border border-gray-300 focus:border-blue-600 outline-none rounded-lg" />
         <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
@@ -65,7 +67,8 @@
       </div>
 
       <div class="relative flex items-center">
-        <input [(ngModel)]="category.description" name="description"
+        <input name="description"
+               formControlName="categoryDescription"
                type="text" placeholder="Nhập mô tả"
                class="px-4 py-3 bg-white text-gray-800 w-full text-sm border border-gray-300 focus:border-blue-600 outline-none rounded-lg" />
         <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"

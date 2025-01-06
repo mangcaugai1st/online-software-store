@@ -25,9 +25,9 @@ export class CategoryService {
   }
 
   // Cập nhật danh mục
-  updateExistedCategory(category: Category)
+  updateExistedCategory(categoryId: number, category: Category)
   {
-    return this.http.put<Category>(`${this.apiUrl}categories/` + category.id, category);
+    return this.http.put<Category>(`${this.apiUrl}categories/${categoryId}`, category);
   }
 
   // Xóa danh mục

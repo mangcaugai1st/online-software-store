@@ -36,7 +36,12 @@
 
       </td>
       <td class="p-4">
-        <app-update-existed-category-modal />
+        <app-update-existed-category-modal
+          [categoryId]="category.id"
+          [categoryName]="category.name"
+          [categorySlug]="category.slug"
+          [categoryDescription]="category.description"
+        />
 
         <app-delete-existed-category
           [categoryId]="category.id"

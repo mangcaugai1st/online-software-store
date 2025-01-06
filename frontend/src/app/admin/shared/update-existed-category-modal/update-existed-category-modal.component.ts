@@ -16,23 +16,23 @@ import {Category} from '../../../models/category.model';
   styleUrl: './update-existed-category-modal.component.css'
 })
 export class UpdateExistedCategoryModalComponent {
-  // category: Category = new class implements Category {
-  //   id: number;
-  //   name: string | null;
-  //   description: string | null;
-  //   slug: string | null;
-  // };
-  @Input() category: Category;
-  isVisible: boolean  = false;
+  category: Category;
+  @Input() categoryId: number;
+  @Input() categoryName: string = '';
+  @Input() categorySlug: string = '';
+  @Input() categoryDescription: string = '';
+  isVisible: boolean = false;
   updateForm: FormGroup
 
   constructor(
     private categoryService: CategoryService,
     private formBuilder: FormBuilder
   ) {
-      this.updateForm = this.formBuilder.group({
-        name: ['', Validators.required],
-      })
+    this.updateForm = this.formBuilder.group({
+      categoryName: ['', [Validators.required]],
+      categorySlug: ['', [Validators.required]],
+      categoryDescription: [''],
+    })
   }
 
   openModal(): void {
@@ -44,15 +44,21 @@ export class UpdateExistedCategoryModalComponent {
   }
 
   saveChanges() {
-    this.categoryService.updateExistedCategory(this.category).subscribe(
-      (saveChanges) => {
-        alert('Cập nhật danh mục thành công!');
-        // Cập nhật lại danh mục nếu thành công
-        this.category = saveChanges;
+    const updatedCategory: Category = {
+      id: this.categoryId,
+      name: this.updateForm.get('categoryName')?.value,
+      slug: this.updateForm.get('categorySlug')?.value,
+      description: this.updateForm.get('categoryDescription')?.value || null,
+    };
+    this.categoryService.updateExistedCategory(this.categoryId, updatedCategory).subscribe({
+      next: () => {
+        console.log('Cập nhật thành công');
+        this.closeModal();
+        window.location.reload();
       },
-      (error) => {
-        console.log(error);
-      }
-    )
+      error: (error) => {
+        console.log('Lỗi khi cập nhật', error);
+      },
+    });
   }
 }
