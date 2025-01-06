@@ -14,38 +14,20 @@ public class CategoriesController : ControllerBase
     private readonly ApplicationDbContext _context;
     private readonly ICategoryService _categoryService;
     
-    // public CategoriesController(ApplicationDbContext context)
-    // {
-    //     _context = context;
-    // }
-    
     public CategoriesController(ICategoryService categoryService, ApplicationDbContext context)
     {
         _categoryService = categoryService ?? throw new ArgumentNullException(nameof(categoryService));
         _context = context;
     }
     
-    // GET: api/Categories
     [HttpGet]
-    // public async Task<ActionResult<IEnumerable<CategoryDto>>> GetCategories()
-    // {
-    //     return await _context.Categories.Select(c => new CategoryDto
-    //     {
-    //         Id = c.Id,
-    //         Name = c.Name, 
-    //         Slug = c.Slug, 
-    //         Description = c.Description,
-    //     }).ToListAsync();
-    // }
     public async Task<ActionResult<IEnumerable<Category>>> GetCategories()
     {
-        // return await _context.Categories.ToListAsync();
         var categories = await _categoryService.GetAllCategoriesAsync();
         
         return Ok(categories);
     }
-
-    // GET: api/Categories/{id}
+    
     [HttpGet("{id}")]
     public async Task<ActionResult<Category>> GetCategoryById(int id)
     {
@@ -71,7 +53,6 @@ public class CategoriesController : ControllerBase
         return Ok(products);
     }
     
-    // POST: api/Categories
     [HttpPost]
     public async Task<ActionResult<Category>> AddCategory([FromBody] CategoryDto categoryDto)
     {
@@ -88,8 +69,7 @@ public class CategoriesController : ControllerBase
         try
         {
             var createdCategory = await _categoryService.AddCategoryAsync(categoryDto);
-
-            // return CreatedAtAction(nameof(GetCategoryById), new { id = createdCategory.Id }, createdCategory);
+            
             return Ok();
         }
         catch (Exception ex)
@@ -131,11 +111,6 @@ public class CategoriesController : ControllerBase
         }
         
         return NoContent();
-    }
-
-    private bool CategoryExists(int id)
-    {
-        return _context.Categories.Any(e => e.Id == id);
     }
 }
 
