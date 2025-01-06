@@ -1,5 +1,6 @@
 using backend.Models;
 using backend.Models.DTOs;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;
 
 namespace backend.Services;
@@ -25,7 +26,7 @@ public class CategoryService : ICategoryService
 
     public async Task<IEnumerable<Category>> GetAllCategoriesAsync()
     {
-        var categories = await _context.Categories.OrderBy(category => category.Name).ToListAsync();          
+        var categories = await _context.Categories.ToListAsync();          
         
         return  categories;
     }
