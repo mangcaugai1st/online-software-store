@@ -24,4 +24,30 @@ export class ProductService {
     {
       return this.http.get<Product[]>(`${this.apiUrl}products/product/${productSlug}`);
     }
+
+    getProductDetailsById(productId: number)
+    {
+      return this.http.get<Product>(`${this.apiUrl}products/product/${productId}`);
+    }
+
+    getProductDetailsBySlugName(productSlug: string)
+    {
+      return this.http.get<Product>(`${this.apiUrl}products/product/${productSlug}`);
+    }
+
+    createNewProduct(product: Product)
+    {
+      return this.http.post<Product>(`${this.apiUrl}products`, product);
+    }
+
+    updateExistedProduct(productId: number, product: Product)
+    {
+      return this.http.put<Product>(`${this.apiUrl}/products/product/${productId}`, product);
+    }
+
+    deleteProduct(productId: number)
+    {
+      return this.http.delete(`${this.apiUrl}products/product/${productId}`);
+    }
+
 }

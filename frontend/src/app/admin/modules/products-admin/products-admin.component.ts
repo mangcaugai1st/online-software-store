@@ -1,13 +1,15 @@
 import {Component, OnInit} from '@angular/core';
-import {ProductService} from '../../../services/product.service'
-import {Product} from '../../../models/product.model';
+import { ProductService } from '../../../services/product.service'
+import { Product } from '../../../models/product.model';
+import { CreateNewProductsButtonComponent } from '../../shared/create-new-products-button/create-new-products-button.component'
 import {NgForOf} from '@angular/common';
 
 @Component({
   selector: 'app-products-admin',
   standalone: true,
   imports: [
-    NgForOf
+    NgForOf,
+    CreateNewProductsButtonComponent,
   ],
   templateUrl: './products-admin.component.html',
   styleUrl: './products-admin.component.css'
