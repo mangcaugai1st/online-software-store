@@ -28,31 +28,33 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
     
-    [HttpGet("{id}")]
-    public async Task<ActionResult<Product>> GetProduct(int id)
+    [HttpGet("product/{productId}")]
+    public async Task<ActionResult<Product>> GetProduct(int productId)
     {
-        var product = await _productService.GetProductByIdAsync(id);
+        var product = await _productService.GetProductByIdAsync(productId);
+        
         if (product == null)
         {
             return NotFound();
         }
+        
         return Ok(product);
     }
 
-    [HttpGet("product/{id}")]
-    public async Task<ActionResult<Product>> GetProductDetailsById(int id)
-    {
-        var productDetails = await _productService.GetProductByIdAsync(id);
+    // [HttpGet("product/{id}")]
+    // public async Task<ActionResult<Product>> GetProductDetailsById(int id)
+    // {
+    //     var productDetails = await _productService.GetProductByIdAsync(id);
+    //
+    //     if (productDetails == null)
+    //     {
+    //         return NotFound();
+    //     }
+    //     
+    //     return Ok(productDetails);
+    // }
 
-        if (productDetails == null)
-        {
-            return NotFound();
-        }
-        
-        return Ok(productDetails);
-    }
-
-    [HttpGet("product/{productSlug}")]
+    [HttpGet("details/{productSlug}")]
     // public async Task<ActionResult<Product>> GetDetailProduct(string productSlug)
     // {
     //     var product = await _context.Products.Where(p => p.Slug == productSlug).FirstOrDefaultAsync();
@@ -70,6 +72,7 @@ public class ProductsController : ControllerBase
         {
             return NotFound();
         }
+        
         return productDetails;
     }
 
@@ -98,7 +101,7 @@ public class ProductsController : ControllerBase
         }
     }
     
-    [HttpPut("product/{id}")] 
+    [HttpPut("product/{productId}")] 
     public async Task<ActionResult<Product>> UpdateProduct(int productId, [FromBody] ProductDto productDto)
     {
         if (productDto == null)
@@ -116,7 +119,7 @@ public class ProductsController : ControllerBase
             return StatusCode(500, new { message = ex.Message });
         }
     }
-    [HttpDelete("{productId}")] 
+    [HttpDelete("product/{productId}")] 
     public async Task<IActionResult> DeleteProduct(int productId)
     {
         var result = await _productService.DeleteProductAsync(productId);
