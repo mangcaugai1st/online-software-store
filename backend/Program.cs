@@ -23,6 +23,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(opt=>
 
 // Đăng ký service 
 builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 // Cấu hình Authentication
 // var tokenConfig = Configuration.GetSection("TokenConfig").Get<TokenConfig>();
