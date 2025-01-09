@@ -66,6 +66,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+// Cho phép truy xuất các file trong wwwroot
+app.UseStaticFiles();
+
 // Enable CORS
 app.UseCors(policy => policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
 
