@@ -28,7 +28,7 @@ public class ProductsController : ControllerBase
         return Ok(products);
     }
     
-    [HttpGet("product/{productId}")]
+    [HttpGet("{productId}")]
     public async Task<ActionResult<Product>> GetProduct(int productId)
     {
         var product = await _productService.GetProductByIdAsync(productId);
@@ -40,30 +40,8 @@ public class ProductsController : ControllerBase
         
         return Ok(product);
     }
-
-    // [HttpGet("product/{id}")]
-    // public async Task<ActionResult<Product>> GetProductDetailsById(int id)
-    // {
-    //     var productDetails = await _productService.GetProductByIdAsync(id);
-    //
-    //     if (productDetails == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     
-    //     return Ok(productDetails);
-    // }
-
-    [HttpGet("details/{productSlug}")]
-    // public async Task<ActionResult<Product>> GetDetailProduct(string productSlug)
-    // {
-    //     var product = await _context.Products.Where(p => p.Slug == productSlug).FirstOrDefaultAsync();
-    //     if (product == null)
-    //     {
-    //         return NotFound();
-    //     }
-    //     return product;
-    // }
+    
+    [HttpGet("detail/{productSlug}")]
     public async Task<ActionResult<Product>> GetProductDetailsByProductSlug(string productSlug)
     {
         var productDetails = await _productService.GetProductDetailsBySlugNameAsync(productSlug);
@@ -77,7 +55,7 @@ public class ProductsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<ActionResult<Product>> AddNewProduct([FromBody] ProductDto productDto)
+    public async Task<ActionResult<Product>> AddNewProduct([FromForm] ProductDto productDto)
     {
         if (productDto == null)
         {
@@ -101,7 +79,7 @@ public class ProductsController : ControllerBase
         }
     }
     
-    [HttpPut("product/{productId}")] 
+    [HttpPut("update_product/{productId}")] 
     public async Task<ActionResult<Product>> UpdateProduct(int productId, [FromBody] ProductDto productDto)
     {
         if (productDto == null)
@@ -119,7 +97,7 @@ public class ProductsController : ControllerBase
             return StatusCode(500, new { message = ex.Message });
         }
     }
-    [HttpDelete("product/{productId}")] 
+    [HttpDelete("delete_product/{productId}")] 
     public async Task<IActionResult> DeleteProduct(int productId)
     {
         var result = await _productService.DeleteProductAsync(productId);

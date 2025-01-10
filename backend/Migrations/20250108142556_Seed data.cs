@@ -27,8 +27,8 @@ namespace backend.Migrations
                 columns: new[] { "Id", "CreatedAt", "Email", "IsActive", "IsAdmin", "Password", "Phone", "UpdatedAt", "Username" },
                 values: new object[,]
                 {
-                    { 1, new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8735), "admin@example.com", true, true, "AdminPassword", "0123456789", new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8736), "admin" },
-                    { 2, new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740), "user@example.com", true, false, "UserPassword", "0123456789", new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740), "user" }
+                    { 1, new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2001), "admin@example.com", true, true, "AdminPassword", "0123456789", new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2002), "admin" },
+                    { 2, new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2006), "user@example.com", true, false, "UserPassword", "0123456789", new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2006), "user" }
                 });
 
             migrationBuilder.InsertData(
@@ -36,8 +36,8 @@ namespace backend.Migrations
                 columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "ImagePath", "IsActive", "Name", "Price", "Slug", "StockQuantity", "UpdatedAt" },
                 values: new object[,]
                 {
-                    { 1, 2, new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8692), "photoshop", "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", true, "Photoshop", 1000000m, "photoshop", 100, new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8695) },
-                    { 2, 1, new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708), "Dota 2", "https://cdn-icons-png.flaticon.com/512/588/588308.png", true, "Dota 2", 100000m, "dota2", 100, new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708) }
+                    { 1, 2, new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1962), "photoshop", "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", true, "Photoshop", 1000000m, "photoshop", 100, new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1965) },
+                    { 2, 1, new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1974), "Dota 2", "https://cdn-icons-png.flaticon.com/512/588/588308.png", true, "Dota 2", 100000m, "dota2", 100, new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1974) }
                 });
         }
 

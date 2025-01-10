@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <Folder Include="Data\Entities\" />
+    <Folder Include="wwwroot\images\" />
   </ItemGroup>
 
 </Project>

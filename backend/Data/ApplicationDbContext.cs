@@ -71,3 +71,15 @@ public class ApplicationDbContext : DbContext
         );
     }
 }
+/*
+ * Entity Framework Core command line
+ * - dotnet ef database update
+ * - dotnet ef database drop
+ * - dotnet ef dbcontext info
+ * - dotnet ef dbcontext list
+ * - dotnet ef dbcontext optimize
+ * - dotnet ef migrations add
+ * - dotnet ef migrations list
+ * - dotnet ef migrations remove
+ * - dotnet ef migrations script
+ */

@@ -1,11 +1,19 @@
 {
   "Version": 1,
-  "Hash": "7/yvsnDRTixX0vVer35KSjS1HzfM4rGxA/gc1emwSdw=",
+  "Hash": "Rku56vwBwewVSljIK8nQMJD06Jb0Vc01JRWt9nLUKlY=",
   "Source": "backend",
   "BasePath": "_content/backend",
   "Mode": "Default",
   "ManifestType": "Build",
   "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
+  "DiscoveryPatterns": [
+    {
+      "Name": "backend\\wwwroot",
+      "Source": "backend",
+      "ContentRoot": "D:\\mangcaugai1st\\backend\\wwwroot\\",
+      "BasePath": "_content/backend",
+      "Pattern": "**"
+    }
+  ],
   "Assets": []
 }

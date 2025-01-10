@@ -142,3 +142,4 @@ D:\mangcaugai1st\backend\obj\Debug\net8.0\backend.genruntimeconfig.cache
 D:\mangcaugai1st\backend\obj\Debug\net8.0\ref\backend.dll
 D:\mangcaugai1st\backend\obj\Debug\net8.0\backend.sourcelink.json
 D:\mangcaugai1st\backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\mangcaugai1st\backend\bin\Debug\net8.0\backend.staticwebassets.runtime.json

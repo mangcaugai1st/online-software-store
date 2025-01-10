@@ -48,25 +48,59 @@ public class ProductService : IProductService
 
     public async Task<Product> AddProductAsync(ProductDto productDto)
     {
-        var product = new Product
-        { 
-            Name = productDto.Name,
-            Price = productDto.Price,
-            // ImagePath = uniqueFileName,
-            ImagePath = productDto.ImagePath,
-            Description = productDto.Description,
-            StockQuantity = productDto.StockQuantity,
-            Slug = productDto.Slug,
-            IsActive = productDto.IsActive,
-            CategoryId = productDto.CategoryId
-        };
-        
-        _context.Products.Add(product); // Thêm mới sản phẩm vào database 
-        
-        await _context.SaveChangesAsync(); 
-        
-        // trả về thông tin sản phẩm đã được tạo thành công
-        return product; 
+        try
+        {
+             var product = new Product
+             { 
+                 Name = productDto.Name,
+                 Price = productDto.Price,
+                 // ImagePath = uniqueFileName,
+                 // ImagePath = productDto.ImagePath,
+                 Description = productDto.Description,
+                 StockQuantity = productDto.StockQuantity,
+                 Slug = productDto.Slug,
+                 IsActive = productDto.IsActive,
+                 CategoryId = productDto.CategoryId
+             };
+     
+             if (productDto.ImagePath != null)
+             {
+                 // Khai báo folder nào sẽ là folder lưu trữ hình ảnh. 
+                 string uploadsFolder = Path.Combine(_environment.WebRootPath, "images");
+                 
+                 // Tạo tên file duy nhất để tránh trùng lặp. 
+                 string uniqueFileName = Guid.NewGuid().ToString() + "_" + productDto.ImagePath.FileName; 
+                 
+                 // Đường dẫn hình ảnh = uploadsFoler + uniqueFileName 
+                 string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+                 
+                 // Tự động tạo ra folder để lưu trữ hình ảnh nếu nó không tồn tại 
+                 if (!Directory.Exists(uploadsFolder))
+                 {
+                     Directory.CreateDirectory(uploadsFolder);
+                 }
+                 
+                 // Lưu file
+                 using (var fileStream = new FileStream(filePath, FileMode.Create))
+                 {
+                     await productDto.ImagePath.CopyToAsync(fileStream);
+                 }
+                 
+                 // Lưu đường dẫn tương đối vào database
+                 product.ImagePath = "/images/" + uniqueFileName;
+                 
+             }
+             _context.Products.Add(product); // Thêm mới sản phẩm vào database 
+             await _context.SaveChangesAsync(); 
+             
+             // trả về thông tin sản phẩm đã được tạo thành công
+             return product;       
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        } 
     }
 
     public async Task<Product> UpdateProductAsync(int productId, ProductDto productDto)
@@ -78,16 +112,23 @@ public class ProductService : IProductService
             throw new KeyNotFoundException($"Không tìm thấy sản phẩm");
             
         }
-
-        productDto.Name = productDto.Name;
-        productDto.Price = productDto.Price;
-        productDto.ImagePath = productDto.ImagePath;
-        productDto.Description = productDto.Description;
-        productDto.StockQuantity = productDto.StockQuantity;
-        productDto.Slug = productDto.Slug;
-        productDto.IsActive = productDto.IsActive;
-        productDto.CategoryId = productDto.CategoryId;
+        /*
+         * Cập nhật đối tượng product:
+         * - Gán giá trị từ productDto cho đối tượng product.
+         * - Cập nhật các thuộc tính của product với giá trị từ productDto
+         */
+        product.Name = productDto.Name;
+        product.Price = productDto.Price;
+        // product.ImagePath = productDto.ImagePath;
+        product.Description = productDto.Description;
+        product.StockQuantity = productDto.StockQuantity;
+        product.Slug = productDto.Slug;
+        product.IsActive = productDto.IsActive;
+        product.CategoryId = productDto.CategoryId;
         
+        /*
+         * Cập nhật dữ liệu vào cơ sở dữ liệu
+         */
         _context.Products.Update(product);
         await _context.SaveChangesAsync();
         

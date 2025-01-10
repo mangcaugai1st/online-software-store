@@ -297,7 +297,7 @@ namespace backend.Migrations
                         {
                             Id = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8692),
+                            CreatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1962),
                             Description = "photoshop",
                             ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
                             IsActive = true,
@@ -305,13 +305,13 @@ namespace backend.Migrations
                             Price = 1000000m,
                             Slug = "photoshop",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8695)
+                            UpdatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1965)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708),
+                            CreatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1974),
                             Description = "Dota 2",
                             ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
                             IsActive = true,
@@ -319,7 +319,7 @@ namespace backend.Migrations
                             Price = 100000m,
                             Slug = "dota2",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8708)
+                            UpdatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(1974)
                         });
                 });
 
@@ -404,25 +404,25 @@ namespace backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8735),
+                            CreatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2001),
                             Email = "admin@example.com",
                             IsActive = true,
                             IsAdmin = true,
                             Password = "AdminPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8736),
+                            UpdatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2002),
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740),
+                            CreatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2006),
                             Email = "user@example.com",
                             IsActive = true,
                             IsAdmin = false,
                             Password = "UserPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2024, 12, 18, 23, 56, 39, 559, DateTimeKind.Utc).AddTicks(8740),
+                            UpdatedAt = new DateTime(2025, 1, 8, 14, 25, 55, 766, DateTimeKind.Utc).AddTicks(2006),
                             Username = "user"
                         });
                 });
