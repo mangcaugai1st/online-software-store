@@ -35,11 +35,15 @@ export class ProductService {
       return this.http.get<Product>(`${this.apiUrl}products/product/${productSlug}`);
     }
 
-    createNewProduct(product: Product)
-    {
-      return this.http.post<Product>(`${this.apiUrl}products`, product);
-    }
+    // createNewProduct(productData: FormData)
+    // {
+    //   return this.http.post<Product>(`${this.apiUrl}products`, product);
+    // }
 
+    createNewProduct(productData: FormData)
+   {
+      return this.http.post<Product>(`${this.apiUrl}products`, productData);
+   }
     updateExistedProduct(productId: number, product: Product)
     {
       return this.http.put<Product>(`${this.apiUrl}/products/product/${productId}`, product);
