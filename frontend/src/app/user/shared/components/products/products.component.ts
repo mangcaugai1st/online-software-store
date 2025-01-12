@@ -36,6 +36,7 @@ export class ProductsComponent implements OnInit {
     this.productService.getProductsByCategory(this.slug).subscribe(
       (data: Product[]) => {
         this.products = data;
+        console.log(data);
       },
       (error) => {
         console.error('Lỗi khi lấy sản phẩm:', error);

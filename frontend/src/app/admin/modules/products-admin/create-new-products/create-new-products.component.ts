@@ -70,11 +70,6 @@ export class CreateNewProductsComponent implements OnInit {
   }
 
   onSubmit(): void {
-    // if (this.productForm.valid) {
-    //   this.productService.createNewProduct(this.productForm.value).subscribe(response => {
-    //     console.log('Sản phẩm đã được tạo', response);
-    //   });
-    // }
     if (this.productForm.valid) {
       const formData = new FormData();
       formData.append("name", this.productForm.get("name")?.value);
@@ -86,13 +81,10 @@ export class CreateNewProductsComponent implements OnInit {
       formData.append("isActive", this.productForm.get("isActive")?.value);
       formData.append('imagePath', this.selectedFile)
 
-      // if (this.selectedFile) {
-      //   formData.append('imagePath', this.selectedFile);
-      // }
-
       this.productService.createNewProduct(formData).subscribe(
         (response) => {
           console.log('Sản phẩm đã được tạo thành công:', response);
+          console.log(formData);
           this.productForm.reset();
           this.selectedFile = null;
           this.imagePreview = null
