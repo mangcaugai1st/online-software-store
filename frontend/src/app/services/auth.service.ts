@@ -19,6 +19,9 @@ export class AuthService {
 
   constructor(private http: HttpClient) {}
 
+  /*
+  * Xử lý đăng ký người dùng mới
+  */
   registerHandler() {
     // return this.http.post(this.apiUrl + 'auth' + '/register', JSON.stringify({}))
     return this.http.post<User>(`${this.apiUrl}auth/register`, JSON.stringify({}))

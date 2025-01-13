@@ -1,6 +1,7 @@
 import { Routes } from '@angular/router';
 import { HomeComponent } from './user/modules/home/home.component';
 import { LoginComponent } from './user/modules/login/login.component';
+import { RegisterComponent } from './user/modules/register/register.component';
 import { ProductListComponent } from './user/modules/product-list/product-list.component';
 import { ProductsComponent } from './user/shared/components/products/products.component';
 import { DetailProductComponent } from './user/shared/components/detail-product/detail-product.component';
@@ -17,6 +18,7 @@ import { UserComponent } from './user/user.component';
 export const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'login', component: LoginComponent},
+  { path: 'dang_ky', component: RegisterComponent},
   { path: ':categorySlug', component: ProductListComponent},
   { path: 'product/:productSlug', component: DetailProductComponent},
 

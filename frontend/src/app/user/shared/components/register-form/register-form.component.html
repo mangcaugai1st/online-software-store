@@ -1,1 +1,122 @@
-<p>register-form works!</p>
+<form
+  [formGroup]="registrationForm"
+  (ngSubmit)="onSubmit()"
+  class="space-y-4 font-[sans-serif] text-[#333] max-w-md mx-auto"
+>
+  <div class="relative flex items-center">
+    <input formControlName="username"
+           type="text" placeholder="Nhập tên đăng nhập"
+           class="px-4 py-3 bg-[#f0f1f2] focus:bg-transparent w-full text-sm border outline-[#007bff] rounded transition-all" />
+
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb" class="w-[18px] h-[18px] absolute right-4"
+         viewBox="0 0 682.667 682.667">
+      <defs>
+        <clipPath id="a" clipPathUnits="userSpaceOnUse">
+          <path d="M0 512h512V0H0Z" data-original="#000000"></path>
+        </clipPath>
+      </defs>
+      <g clip-path="url(#a)" transform="matrix(1.33 0 0 -1.33 0 682.667)">
+        <path fill="none" stroke-miterlimit="10" stroke-width="40"
+              d="M452 444H60c-22.091 0-40-17.909-40-40v-39.446l212.127-157.782c14.17-10.54 33.576-10.54 47.746 0L492 364.554V404c0 22.091-17.909 40-40 40Z"
+              data-original="#000000"></path>
+        <path
+          d="M472 274.9V107.999c0-11.027-8.972-20-20-20H60c-11.028 0-20 8.973-20 20V274.9L0 304.652V107.999c0-33.084 26.916-60 60-60h392c33.084 0 60 26.916 60 60v196.653Z"
+          data-original="#000000"></path>
+      </g>
+    </svg>
+  </div>
+  <div *ngIf="submitted && registrationForm.get('username').errors">
+    <div *ngIf="registrationForm.get['username'].errors['required']">
+      <p class="text-red-500">Vui lòng nhập tên đăng nhập</p>
+    </div>
+  </div>
+
+  <div class="relative flex items-center">
+    <input formControlName="password"
+           type="password" placeholder="Nhập mật khẩu"
+           class="px-4 py-3 bg-[#f0f1f2] focus:bg-transparent w-full text-sm border outline-[#007bff] rounded transition-all" />
+
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
+         class="w-[18px] h-[18px] absolute right-4 cursor-pointer" viewBox="0 0 128 128">
+      <path
+        d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
+        data-original="#000000"></path>
+    </svg>
+  </div>
+
+  <div class="relative flex items-center">
+    <input formControlName="confirmPassword"
+           type="password" placeholder="Nhập lại mật khẩu"
+           class="px-4 py-3 bg-[#f0f1f2] focus:bg-transparent w-full text-sm border outline-[#007bff] rounded transition-all" />
+
+    <svg xmlns="http://www.w3.org/2000/svg" fill="#bbb" stroke="#bbb"
+         class="w-[18px] h-[18px] absolute right-4 cursor-pointer" viewBox="0 0 128 128">
+      <path
+        d="M64 104C22.127 104 1.367 67.496.504 65.943a4 4 0 0 1 0-3.887C1.367 60.504 22.127 24 64 24s62.633 36.504 63.496 38.057a4 4 0 0 1 0 3.887C126.633 67.496 105.873 104 64 104zM8.707 63.994C13.465 71.205 32.146 96 64 96c31.955 0 50.553-24.775 55.293-31.994C114.535 56.795 95.854 32 64 32 32.045 32 13.447 56.775 8.707 63.994zM64 88c-13.234 0-24-10.766-24-24s10.766-24 24-24 24 10.766 24 24-10.766 24-24 24zm0-40c-8.822 0-16 7.178-16 16s7.178 16 16 16 16-7.178 16-16-7.178-16-16-16z"
+        data-original="#000000"></path>
+    </svg>
+  </div>
+  <div *ngIf="submitted && registrationForm.get('password').errors">
+    <p *ngIf="registrationForm.get('confirmPassword').errors['required']" class="text-red-500">Vui lòng nhập lại mật khẩu</p>
+    <p *ngIf="registrationForm.get['confirmPassword'].errors['passwordMismatch']">Mật khẩu nhập lại không khớp</p>
+  </div>
+
+  <button type="submit"
+          class="px-6 py-2.5 w-full !mt-8 text-sm bg-[#007bff] hover:bg-blue-600 text-white rounded active:bg-[#006bff]">Đăng ký</button>
+</form>
+
+<div class="font-[sans-serif] space-y-6">
+
+  <div
+    *ngIf="successMessage"
+    class="flex items-start max-sm:flex-col bg-green-100 text-green-800 p-4 rounded-lg relative"
+    role="alert"
+  >
+    <div class="flex items-center max-sm:mb-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] fill-green-500 inline mr-3" viewBox="0 0 512 512">
+        <ellipse cx="256" cy="256" fill="#32bea6" data-original="#32bea6" rx="256" ry="255.832" />
+        <path fill="#fff" d="m235.472 392.08-121.04-94.296 34.416-44.168 74.328 57.904 122.672-177.016 46.032 31.888z"
+              data-original="#ffffff" />
+      </svg>
+      <strong class="font-bold text-sm">Success!</strong>
+    </div>
+
+    <span class="block sm:inline text-sm ml-4 mr-8 max-sm:ml-0 max-sm:mt-2">{{successMessage}}</span>
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="w-7 hover:bg-green-200 rounded-lg transition-all p-2 cursor-pointer fill-green-500 absolute right-4 top-1/2 -translate-y-1/2" viewBox="0 0 320.591 320.591">
+      <path
+        d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+        data-original="#000000" />
+      <path
+        d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+        data-original="#000000" />
+    </svg>
+  </div>
+
+  <div
+    *ngIf="errorMessage"
+    class="flex items-start max-sm:flex-col bg-red-100 text-red-800 p-4 rounded-lg relative"
+    role="alert">
+    <div class="flex items-center max-sm:mb-2">
+      <svg xmlns="http://www.w3.org/2000/svg" class="w-[18px] fill-red-500 inline mr-3" viewBox="0 0 32 32">
+        <path
+          d="M16 1a15 15 0 1 0 15 15A15 15 0 0 0 16 1zm6.36 20L21 22.36l-5-4.95-4.95 4.95L9.64 21l4.95-5-4.95-4.95 1.41-1.41L16 14.59l5-4.95 1.41 1.41-5 4.95z"
+          data-original="#ea2d3f" />
+      </svg>
+      <strong class="font-bold text-sm">Error!</strong>
+    </div>
+
+    <span class="block sm:inline text-sm ml-4 mr-8 max-sm:ml-0 max-sm:mt-2">{{errorMessage}}</span>
+
+    <svg xmlns="http://www.w3.org/2000/svg"
+         class="w-7 hover:bg-red-200 rounded-lg transition-all p-2 cursor-pointer fill-red-500 absolute right-4 top-1/2 -translate-y-1/2" viewBox="0 0 320.591 320.591">
+      <path
+        d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+        data-original="#000000" />
+      <path
+        d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+        data-original="#000000" />
+    </svg>
+  </div>
+</div>
