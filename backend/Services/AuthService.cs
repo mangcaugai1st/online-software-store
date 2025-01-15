@@ -12,7 +12,7 @@ using Microsoft.IdentityModel.Tokens;
 public interface IAuthService
 {
     Task<string> LoginAsync(LoginDto loginDto);
-    Task<string> RegisterAsync(RegisterDto registerDto);
+    Task<User> RegisterAsync(RegisterDto registerDto);
 }
 public class AuthService : IAuthService
 {
@@ -75,9 +75,35 @@ public class AuthService : IAuthService
     }
     
     // Đây là service dùng để thực hiện các logic của chức năng đăng ký tài khoản mới.
-    public async Task<string> RegisterAsync(RegisterDto registerDto)
+    public async Task<User> RegisterAsync(RegisterDto registerDto)
     {
-        var userExits = await _context.Users.FirstOrDefaultAsync(user => user.Username == registerDto.Username);
-        
+        try
+        {
+            var userExists = await _context.Users.FirstOrDefaultAsync(user => user.Username == registerDto.Username);
+
+            if (userExists != null)
+            {
+                throw new ApplicationException($"Username {registerDto.Username} already exist");
+            }
+            var newUser = new User
+            {
+                Username = registerDto.Username,
+                Password = registerDto.Password,
+                Email = "",
+                Phone = "",
+                IsAdmin = false,
+                IsActive = true
+            };
+            
+            await _context.Users.AddAsync(newUser);
+            await _context.SaveChangesAsync();
+
+            return newUser;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine(e);
+            throw;
+        }
     }
 }
