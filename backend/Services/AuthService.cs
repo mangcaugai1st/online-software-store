@@ -22,7 +22,7 @@ public class AuthService : IAuthService
     public AuthService(ApplicationDbContext context, IConfiguration config)
     {
         _context = context;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
     }
 
     /*
@@ -37,7 +37,26 @@ public class AuthService : IAuthService
          */
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Name, user.Username), // Thêm username vào token
+            /*
+            * Thêm ID của người dùng vào token
+            *   - Ưu điểm:
+             *      + Chuẩn hóa: ClaimTypes.NameIdentifier là một phần của .NET có tính tương thích cao với các thư viện và công cụ khác có thể sử dụng JWT token.
+             *        và được sử dụng rộng rãi để biểu diễn ID người dùng.
+             *  - Nhược điểm:
+             *      + Thiếu tính linh hoạt 
+            */
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+            
+            /*
+             * Thêm ID của người dùng vào token
+             *  - Ưu điểm:
+             *      + Tùy chỉnh linh hoạt, độc lập với các chuẩn 
+             *  - Nhược điểm:
+             *      + Không chuẩn hóa 
+             */
+            new Claim("user_id", user.Id.ToString()),
+            
+            new Claim(JwtRegisteredClaimNames.Name, user.Username!), // Thêm username vào token
             new Claim("role", user.IsAdmin.ToString()), // Thêm role của user vào token
         };
         
