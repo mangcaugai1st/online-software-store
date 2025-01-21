@@ -1,0 +1,60 @@
+* *.component.ts
+#+BEGIN_SRC javascript
+    export class RegisterComponent implements OnInit {
+      registerForm: FormGroup;
+      message: string = '';
+
+      constructor(private fb: FormBuilder, private userService: UserService) { }
+
+      ngOnInit(): void {
+        this.registerForm = this.fb.group({
+          username: ['', [Validators.required, Validators.minLength(3)]],
+          email: ['', [Validators.required, Validators.email]],
+          password: ['', [Validators.required, Validators.minLength(6)],
+          confirmPassword: ['', [Validators.required]]
+        }, {
+          validator: this.passwordMatchValidator
+        });
+      }
+    }
+
+    passwordMatchValidator(group: FormGroup): { [Key: string]: boolean } | null {
+      const password = group.get('password');
+      const confirmPassword = group.get('confirmPassword');
+
+      if (password && confirmPassword && password.value !== confirmPassword.value) {
+        return { 'missmatch': true };
+      }
+      return null;
+    }
+
+    onSubmit(): void {
+      if (this.registerForm.invalid) {
+        this.message = "Vui long dien day du thong tin hop le";
+        return;
+      }
+
+      const userData = this.registerForm.value;
+
+      this.userService.registerHandler(userData).subscribe({
+        next: (response) => { this.message = 'Dang ky thanh cong' };
+        console.log(respone);
+      },
+      error: (err) => {
+        this.message = 'Dang ky that bai, Vui long thu lai';
+        console.log(err);
+      }
+  )};
+#+END_SRC
+
+* *.html
+#+BEGIN_SRC html
+  <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+    <input formControlName="username"></input>
+    <button type="submit" [disabled]="registerForm.invalid">Dang ky</button>
+  </form>
+
+  <p>{{ message }}</p>
+#+END_SRC
+
+

@@ -1,0 +1,48 @@
+* *.service.ts 
+private apiUrl = 'https://...';
+
+* *.component.ts
+#+BEGIN_SRC javascript
+  username: string = '';
+  email: string = '';
+  password: string = '';
+  confirmPassword: string = '';
+  message: string = '';
+
+  onSubmit() {
+    if (this.password !== this.confirmPassword) {
+      this.message = "Mat khau khong khop";
+      return;
+    }
+
+    const userData = {
+      username: this.username,
+      email: this.email,
+      password: this.password
+    };
+
+    this.registrationService.registerUser(userData).subscribe({
+      next: (response) => {
+        this.message = 'Dang ky thanh cong!';
+      },
+      error: (err) => {
+        this.message = 'Dang ky that bai. Vui long thu lai';
+        console.error(err);
+      }
+    });
+  }
+#+END_SRC
+
+* *.html
+#+BEGIN_SRC html
+  <form (ngSubmit)="onSubmit">
+    <input [(ngModel)]="username"></input>
+    <input [(ngModel)]="email"></input>
+    <input [(ngModel)]="password"></input>
+    <input [(ngModel)]="confirmPassword"></input>
+    <button type="submit"></button> 
+  </form>
+
+  <p>{{ message }}</p>
+#+END_SRC
+
