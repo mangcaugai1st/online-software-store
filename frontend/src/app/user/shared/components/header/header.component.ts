@@ -5,7 +5,7 @@ import { SearchProductPipe } from '../../../../pipes/search-product.pipe'
 import { ProductService } from '../../../../services/product.service'
 import {Product} from '../../../../models/product.model';
 import {FormsModule} from '@angular/forms';
-import {AsyncPipe, NgForOf, NgIf} from '@angular/common';
+import {AsyncPipe, CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {AuthService} from '../../../../services/auth.service';
 import {jwtDecode} from 'jwt-decode';
 
@@ -18,16 +18,19 @@ import {jwtDecode} from 'jwt-decode';
     FormsModule,
     NgForOf,
     NgIf,
-    AsyncPipe
+    AsyncPipe,
+    CurrencyPipe
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
 export class HeaderComponent implements OnInit {
-  searchText: string = '';
-  products: Product[] = [];
+  searchQuery: string = '';
+  products = [];
   username?: string;
   isLoggedIn: boolean = false;
+  noResults = false;
+  emptyList = []
 
   @ViewChild('toggleOpen', { static: true }) toggleOpen!: ElementRef;
   @ViewChild('toggleClose', { static: true }) toggleClose!: ElementRef;
@@ -41,7 +44,7 @@ export class HeaderComponent implements OnInit {
   // currentUser$!: Observable<any>;
 
   ngOnInit() {
-    this.GetProducts()
+    this.loadProducts()
     // this.currentUser$ = this.authService.currentUser$;
     this.getUsernameAfterLogin();
     this.isLoggedIn = this.authService.isLoggedIn();
@@ -63,12 +66,24 @@ export class HeaderComponent implements OnInit {
     }
   }
 
-  GetProducts() {
+  // Liệt kê danh sách sản phẩm
+  loadProducts() {
      this.productService.getProducts().subscribe({
        next: (products: Product[]) => { this.products = products },
      })
   }
+  // Tìm kiếm sản phẩm
+  onSearch(): void {
+    if (this.searchQuery.trim()) {
+      this.products = this.products.filter(product =>
+        product.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.emptyList;
+    }
+  }
 
+  // Đăng xuất
   onLogout() {
     this.authService.logoutHandler(); // Xóa token
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import {environment} from '../../environments/environment'
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {User} from '../models/user.model'
 import {BehaviorSubject, map, Observable, tap} from 'rxjs';
 import {jwtDecode, JwtPayload} from 'jwt-decode'
@@ -22,9 +22,10 @@ export class AuthService {
   /*
   * Xử lý đăng ký người dùng mới
   */
-  registerHandler() {
+  registerHandler(userData: any): Observable<User> {
     // return this.http.post(this.apiUrl + 'auth' + '/register', JSON.stringify({}))
-    return this.http.post<User>(`${this.apiUrl}auth/register`, JSON.stringify({}))
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
+    return this.http.post<User>(`${this.apiUrl}auth/register`, userData, { headers })
   }
 
   // Xử lý đăng nhập và lưu trữ thông tin sau khi đăng nhập thành công.
@@ -42,7 +43,6 @@ export class AuthService {
           const userRole: string = decodedToken.role; // Lấy vai trò user
           // this.currentUser = username;
           console.log(`Mã token: ${response.token}, tên người dùng là: ${username}, vai trò là: ${userRole}`);
-
           window.location.reload();
         }
       })

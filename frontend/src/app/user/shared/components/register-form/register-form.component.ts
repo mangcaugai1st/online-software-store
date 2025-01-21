@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {NgIf} from "@angular/common";
 import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {AuthService} from '../../../../services/auth.service';
@@ -14,20 +14,30 @@ import {Router} from '@angular/router';
   templateUrl: './register-form.component.html',
   styleUrl: './register-form.component.css'
 })
-export class RegisterFormComponent {
+export class RegisterFormComponent implements OnInit {
   registrationForm: FormGroup;
   successMessage: string = '';
   errorMessage: string = '';
   submitted: boolean = false;
 
-  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  // constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {
+  //   this.registrationForm = this.formBuilder.group({
+  //     username: ['', Validators.required],
+  //     password: ['', Validators.required],
+  //     confirmPassword: ['', Validators.required]
+  //   }, {
+  //     validators: this.passwordMatchValidator,
+  //   })
+  // }
+  constructor(private formBuilder: FormBuilder, private authService: AuthService, private router: Router) {}
+  ngOnInit(): void {
     this.registrationForm = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
-      confirmPassword: ['', Validators.required]
+      confirmPassword: ['', Validators.required],
     }, {
       validators: this.passwordMatchValidator,
-    })
+    });
   }
 
   passwordMatchValidator(group: FormGroup) {
@@ -50,10 +60,17 @@ export class RegisterFormComponent {
     }
   }
 
-  onSubmit() {
+  onSubmit(): void {
+    // if (this.registrationForm.invalid)
+    // {
+    //   this.errorMessage = "Vui lòng điền đầy đủ thông tin hợp lệ";
+    // }
+
     if (this.registrationForm.valid) {
+      const userData = this.registrationForm.value;
+
       this.errorMessage = '';
-      this.authService.registerHandler().subscribe({
+      this.authService.registerHandler(userData).subscribe({
         next: (response) => {
           this.submitted = true;
           console.log(this.registrationForm.value);
