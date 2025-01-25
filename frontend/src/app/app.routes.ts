@@ -14,6 +14,9 @@ import { CreateNewProductsComponent } from './admin/modules/products-admin/creat
 import { CategoriesAdminComponent } from './admin/modules/categories-admin/categories-admin.component'
 import { AdminComponent } from './admin/admin.component';
 import { UserComponent } from './user/user.component';
+import {
+  UpdateExistingProductComponent
+} from './admin/modules/products-admin/update-existing-product/update-existing-product.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
@@ -50,6 +53,7 @@ export const routes: Routes = [
     children: [
       { path: 'dashboard', component: DashboardComponent, canActivate:[adminGuard] },
       { path: 'products_management', component: ProductsAdminComponent, canActivate:[adminGuard] },
+      { path: 'edit_product/:productId', component: UpdateExistingProductComponent, canActivate:[adminGuard] },
       { path: 'create_new_product', component: CreateNewProductsComponent, canActivate:[adminGuard] },
       { path: 'categories', component: CategoriesAdminComponent, canActivate:[adminGuard]},
       // { path: 'users', component: AdminUsersComponent },

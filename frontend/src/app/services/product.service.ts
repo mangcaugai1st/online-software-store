@@ -41,12 +41,13 @@ export class ProductService {
     // }
 
     createNewProduct(productData: FormData)
-   {
-      return this.http.post<Product>(`${this.apiUrl}products`, productData);
-   }
-    updateExistedProduct(productId: number, product: Product)
     {
-      return this.http.put<Product>(`${this.apiUrl}/products/product/${productId}`, product);
+      return this.http.post<Product>(`${this.apiUrl}products`, productData);
+    }
+
+    updateExistedProduct(productId: number, productData: FormData)
+    {
+      return this.http.put<Product>(`${this.apiUrl}/products/product/${productId}`, productData);
     }
 
     deleteProduct(productId: number)

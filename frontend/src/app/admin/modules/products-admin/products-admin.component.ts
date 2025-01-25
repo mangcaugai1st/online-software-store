@@ -3,6 +3,7 @@ import { ProductService } from '../../../services/product.service'
 import { Product } from '../../../models/product.model';
 import { CreateNewProductsButtonComponent } from '../../shared/create-new-products-button/create-new-products-button.component'
 import {NgForOf} from '@angular/common';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-products-admin',
@@ -10,6 +11,7 @@ import {NgForOf} from '@angular/common';
   imports: [
     NgForOf,
     CreateNewProductsButtonComponent,
+    RouterLink,
   ],
   templateUrl: './products-admin.component.html',
   styleUrl: './products-admin.component.css'
@@ -29,5 +31,4 @@ export class ProductsAdminComponent implements OnInit {
       error: error => console.log(error)
     })
   }
-
 }
