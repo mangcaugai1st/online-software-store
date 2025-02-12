@@ -17,13 +17,15 @@ import { UserComponent } from './user/user.component';
 import {
   UpdateExistingProductComponent
 } from './admin/modules/products-admin/update-existing-product/update-existing-product.component';
+import {CartComponent} from './user/modules/cart/cart.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'login', component: LoginComponent},
   { path: 'dang_ky', component: RegisterComponent},
-  { path: ':categorySlug', component: ProductListComponent},
+  { path: 'danh_muc/:categorySlug', component: ProductListComponent},
   { path: 'product/:productSlug', component: DetailProductComponent},
+  { path: 'abc', component: CartComponent},
 
   // {
   //   path: 'user',

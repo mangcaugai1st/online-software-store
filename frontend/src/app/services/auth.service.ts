@@ -17,7 +17,7 @@ export class AuthService {
   private apiUrl = environment.apiUrl;
   currentUser?: string;
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   /*
   * Xử lý đăng ký người dùng mới
@@ -71,13 +71,12 @@ export class AuthService {
     if (userRole == "False") {return true}
     return false;
   }
+
   // Xoá toàn bộ thông tin đã đăng nhập
   logoutHandler() {
-    localStorage.removeItem('token'); // Xoá token
+    localStorage.removeItem('token'); // Xoá token khi người dùng đăng xuất
     window.location.reload();
   }
-
-  // getAccessToken: Lấy token
 
   // Lấy tên đăng nhập ở thời điểm hiện tại
   getCurrentUser(): string
@@ -89,6 +88,4 @@ export class AuthService {
     }
     return <string>this.currentUser;
   }
-
-  // refreshToken: làm mới token
 }
