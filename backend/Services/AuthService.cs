@@ -18,66 +18,55 @@ public class AuthService : IAuthService
 {
     private readonly SymmetricSecurityKey _key;
     private readonly ApplicationDbContext _context;
+    private readonly IConfiguration _config;
 
     public AuthService(ApplicationDbContext context, IConfiguration config)
     {
         _context = context;
-        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]!));
+        _config = config;
+        _key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["Jwt:Key"]));
     }
 
     /*
      * Method GenerateToken nhận vào một đối tượng User
      * và trả về token dưới dạng string
      */
-    public string GenerateToken(User user)
+    private string GenerateToken(User user)
     {
-        /*
-         * Tạo danh sách các claims
-         * - là những thông tin mã hóa trong token
-         */
+        // Tạo danh sách các claims
         var claims = new List<Claim>
         {
-            /*
-            * Thêm ID của người dùng vào token
-            *   - Ưu điểm:
-             *      + Chuẩn hóa: ClaimTypes.NameIdentifier là một phần của .NET có tính tương thích cao với các thư viện và công cụ khác có thể sử dụng JWT token.
-             *        và được sử dụng rộng rãi để biểu diễn ID người dùng.
-             *  - Nhược điểm:
-             *      + Thiếu tính linh hoạt 
-            */
-            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            
-            /*
-             * Thêm ID của người dùng vào token
-             *  - Ưu điểm:
-             *      + Tùy chỉnh linh hoạt, độc lập với các chuẩn 
-             *  - Nhược điểm:
-             *      + Không chuẩn hóa 
-             */
-            new Claim("user_id", user.Id.ToString()),
-            
-            new Claim(JwtRegisteredClaimNames.Name, user.Username!), // Thêm username vào token
+            new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()), // Lấy id của người dùng
+            new Claim("user_id", user.Id.ToString()), // Lấy id của người dùng
+            new Claim(JwtRegisteredClaimNames.Name, user.Username!), // username vào token
             new Claim("role", user.IsAdmin.ToString()), // Thêm role của user vào token
         };
-        
-        /*
-         * Tạo chữ ký cho token sử dụng sử dụng thuật toán HMAC SHA256
-         */
-        var creds = new SigningCredentials(_key, SecurityAlgorithms.HmacSha256);
-        // var creds = new SigningCredentials(_key,SecurityAlgorithms.HmacSha512Signature);
-        
+    
+        // Lấy giá trị của Jwt:Key, Jwt:Issuer, Jwt:Audience từ Configuration
+        var issuer = _config["Jwt:Issuer"];
+        var audience = _config["Jwt:Audience"];
+        var secret_key = _config["Jwt:Key"];
+        var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret_key));
+
+        // Tạo chữ ký cho token sử dụng HMAC SHA256
+        var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+    
+        // Tạo các descriptor cho token
         var tokenDescriptor = new SecurityTokenDescriptor
         {
-            Subject = new ClaimsIdentity(claims),
-            Expires = DateTime.Now.AddDays(1),
-            SigningCredentials = creds
+            Subject = new ClaimsIdentity(claims), // Claims (Thông tin về người dùng)
+            Expires = DateTime.Now.AddDays(1), // Token hết hạn sau 1 ngày
+            SigningCredentials = creds, // Chữ ký xác thực
+            Issuer = issuer, // Thêm thông tin về Issuer (ứng dụng phát hành)
+            Audience = audience, // Thông tin về Audience (người dùng sẽ nhận token)
+            IssuedAt = DateTime.UtcNow, // Thời gian token được cấp
         };
-        
-        var tokenHandler = new JwtSecurityTokenHandler();
-        
-        var token = tokenHandler.CreateToken(tokenDescriptor);
-
-        return tokenHandler.WriteToken(token);
+    
+        // Tạo token từ tokenDescriptor
+        var token = new JwtSecurityTokenHandler().CreateToken(tokenDescriptor);
+    
+        // Trả về token dưới dạng chuỗi JWT
+        return new JwtSecurityTokenHandler().WriteToken(token);
     }
     
     public async Task<string> LoginAsync(LoginDto loginDto)

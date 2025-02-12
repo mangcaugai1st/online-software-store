@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Security.Claims;
 using backend.Models;
 using backend.Models.DTOs;
@@ -9,31 +10,41 @@ namespace backend.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-[Authorize]
+// [Authorize]
 public class CartController : ControllerBase
 {
     private readonly IShoppingCartService _shoppingCartService;
-
-    public CartController(IShoppingCartService shoppingCartService)
+    private readonly ILogger<CartController> _logger; // Định nghĩa _logger 
+    private readonly IJwtClaimsService _jwtClaimsService;
+    public CartController(IShoppingCartService shoppingCartService, ILogger<CartController> logger, IJwtClaimsService jwtClaimsService)
     {
         _shoppingCartService = shoppingCartService;
+        _logger = logger;
+        _jwtClaimsService = jwtClaimsService;
     }
     
-    [HttpGet]
+    [HttpGet("user{userId}")]
     public async Task<ActionResult<IEnumerable<Cart>>> GetCart()
     {
-        // Tìm claim có type là NameIdentifier 
-        var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+        // token được lấy từ header của http request dưới dạng: Authorization: Bearer <jwt_token> 
+        var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");       
+        
+        if (string.IsNullOrEmpty(jwtToken))
+        { 
+            return Unauthorized("Jwt Token không tồn tại");
+        }       
+        
+        var userIdFromClaim = _jwtClaimsService.GetUserIdByJwt(jwtToken);
         
         // Kiểm tra nếu không tìm thấy userId
-        if (string.IsNullOrEmpty(userIdClaim))
+        if (string.IsNullOrEmpty(userIdFromClaim))
         {
             return Unauthorized();
         }
 
         try
         {
-            int userId = int.Parse(userIdClaim);
+            int userId = int.Parse(userIdFromClaim);
             var cartItem = await _shoppingCartService.GetCartItemsAsync(userId);
 
             return Ok(cartItem);
@@ -45,53 +56,78 @@ public class CartController : ControllerBase
         }
     }
     
-    [HttpPost("addToCart")]
-    // [Authorize]
-    public async Task<ActionResult<Cart>> AddToCart([FromBody] AddToCartRequest request )
+    [HttpPost("add")]
+    public async Task<IActionResult> AddToCart([FromBody] AddToCartRequest request)
     {
-        // var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        // var userIdClaim = User.FindFirst("user_id")?.Value;
-        // var claims = User.Claims.ToList();
-        // var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
-        //
-        // if (string.IsNullOrEmpty(userIdClaim))
-        // {
-        //     return Unauthorized("Không tìm thấy thông tin người dùng");
-        // }
-        //
-        // try
-        // {
-        //     int userId = int.Parse(userIdClaim);
-        //     var cartItem = await _shoppingCartService.AddToCartAsync(userId, request);
-        //
-        //     return Ok(new
-        //     {
-        //         message = "Thêm vào giỏ hàng thành công", 
-        //         data = cartItem
-        //     });
-        // }
-        // catch (Exception ex)
-        // {
-        //     return StatusCode(500, new
-        //     {
-        //         message = "Có lỗi xảy ra khi thêm sản phẩm vào giỏ hàng",
-        //         error = ex.Message
-        //     });
-        // }
+        if (request == null)
+        {
+            return BadRequest("Vui lòng nhập đúng dữ liệu.");
+        }
+
+        // token được lấy từ header của http request dưới dạng: Authorization: Bearer <jwt_token> 
+        var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return Unauthorized("Jwt Token không tồn tại");
+        }
+        
         try
         {
-            var userIdClaim = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-            int userId = int.Parse(userIdClaim!);
+            var userIdFromClaim = _jwtClaimsService.GetUserIdByJwt(jwtToken);
+            int userId = int.Parse(userIdFromClaim);
             var cartItem = await _shoppingCartService.AddToCartAsync(userId, request);
+
+            if (cartItem == null)
+            {
+                return NotFound();
+            }
+            
             return Ok(cartItem);
         }
-        // catch (NotFoundException ex)
-        // {
-        //     return NotFound(ex.Message);
-        // }
+        
         catch (Exception ex)
         {
-            return StatusCode(500, "An error occurred while processing your request");
+            return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
         }
+    }
+
+    private int GetUserIdFromClaims()
+    {
+        var claims = User.Claims;
+        
+        foreach (var claim in claims)
+        {
+            Console.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
+        }
+        
+        var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == /* ClaimTypes.NameIdentifier */ "user_id")?.Value;
+        // var userIdClaim = User.FindFirst("nameid")?.Value;
+        if (string.IsNullOrEmpty(userIdClaim))
+        {
+            throw new UnauthorizedAccessException("User not authenticated " + userIdClaim);
+        }
+        
+        return int.Parse(userIdClaim);
+    }
+    
+    // Debug các claims trong jwt token
+    private int DebugUserIdFromClaims()
+    {
+        var claims = User.Claims;
+
+        foreach (var claim in claims)
+        {
+            Console.WriteLine($"Claim Type: {claim.Type}, Value: {claim.Value}");
+        }
+        
+        var userIdClaim = User.Claims.FirstOrDefault(claim => claim.Type == ClaimTypes.NameIdentifier)?.Value;
+
+        if (userIdClaim == null)
+        {
+            throw new UnauthorizedAccessException("User not authenticated " + userIdClaim);
+        }
+        
+        return int.Parse(userIdClaim);
     }
 }

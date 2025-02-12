@@ -30,11 +30,11 @@ public class UsersController : ControllerBase
       }).ToListAsync();
    }
   
-   // GET: api/Users/{id}
-   [HttpGet("{id}")]
-   public async Task<ActionResult<User>> GetUser(int id)
+   // GET: api/Users/{userId}
+   [HttpGet("{userId}")]
+   public async Task<ActionResult<User>> GetUser(int userId)
    {
-      var user = await _context.Users.FindAsync(id);
+      var user = await _context.Users.FindAsync(userId);
 
       if (user == null)
       {
