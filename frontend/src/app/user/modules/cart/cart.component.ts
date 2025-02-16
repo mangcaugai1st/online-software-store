@@ -20,6 +20,8 @@ export class CartComponent implements OnInit {
   loading: boolean = false;
   error: string | null = null;
   shippingFee = 25000; // VND
+  increase1ProductQuantity = 1;
+  decrease1ProductQuantity = 1;
 
   constructor(
     private http: HttpClient,
@@ -41,6 +43,32 @@ export class CartComponent implements OnInit {
         console.error(error);
       }
     });
+  }
+
+  // Tăng số lượng sản phẩm trong giỏ hàng
+  increaseQuantity(productId: number): void {
+    this.cartService.increaseQuantity(productId, this.increase1ProductQuantity).subscribe({
+      next: (response) => {
+        this.increase1ProductQuantity++;
+        console.log('+1 sản phẩm thêm thành công', response);
+        window.location.reload();
+      },
+      error: (error) => {
+        console.error('Đã xảy ra lỗi: ', error.message);
+      }
+    });
+  }
+
+  decreaseQuantity(productId: number): void {
+    this.cartService.decreaseQuantity(productId, this.decrease1ProductQuantity).subscribe({
+      next: (response) => {
+        this.decrease1ProductQuantity--;
+        window.location.reload();
+      },
+      error: (error) => {
+        console.log('Đã xảy ra lỗi: ', error.message);
+      }
+    })
   }
 
   getSubtotal(): number {

@@ -24,8 +24,8 @@ export const routes: Routes = [
   { path: 'login', component: LoginComponent},
   { path: 'dang_ky', component: RegisterComponent},
   { path: 'danh_muc/:categorySlug', component: ProductListComponent},
-  { path: 'product/:productSlug', component: DetailProductComponent},
-  { path: 'abc', component: CartComponent},
+  { path: 'san_pham/:productSlug', component: DetailProductComponent},
+  { path: 'gio_hang', component: CartComponent},
 
   // {
   //   path: 'user',

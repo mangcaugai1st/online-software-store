@@ -25,13 +25,13 @@ export class AuthService {
   registerHandler(userData: any): Observable<User> {
     // return this.http.post(this.apiUrl + 'auth' + '/register', JSON.stringify({}))
     const headers = new HttpHeaders({ 'Content-Type': 'application/json'});
-    return this.http.post<User>(`${this.apiUrl}auth/register`, userData, { headers })
+    return this.http.post<User>(`${this.apiUrl}/auth/register`, userData, { headers })
   }
 
   // Xử lý đăng nhập và lưu trữ thông tin sau khi đăng nhập thành công.
   loginHandler(credentials: {username: string, password: string}): Observable<LoginResponse>
   {
-    return this.http.post<LoginResponse>(`${this.apiUrl}auth/login`,credentials).pipe(
+    return this.http.post<LoginResponse>(`${this.apiUrl}/auth/login`,credentials).pipe(
       // tap operator để lưu token
       tap(response => {
         // Lưu token

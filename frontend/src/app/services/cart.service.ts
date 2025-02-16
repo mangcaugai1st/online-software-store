@@ -8,7 +8,7 @@ import {JwtHeader, jwtDecode, JwtPayload} from 'jwt-decode';
   providedIn: 'root'
 })
 export class CartService {
-  private apiUrl = environment.apiUrl + "cart";
+  private apiUrl = environment.apiUrl + "/cart";
 
   constructor(
     private http: HttpClient,
@@ -74,5 +74,54 @@ export class CartService {
     catch (error) {
       return throwError(error);
     }
+  }
+
+  // Method để tăng số lượng sản phẩm trong giỏ hàng
+  increaseQuantity(productId: number, quantity: number): Observable<any> {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("JWT token is missing");
+    }
+
+    // Tạo header chứa JWT token
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    })
+
+    return this.http.put(`${this.apiUrl}/items/${productId}/increase?quantity=${quantity}`, {}, { headers: headers });
+  }
+
+  decreaseQuantity(productId: number, quantity: number): Observable<any> {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("JWT token is missing");
+    }
+
+    // Tạo header chứa JWT token
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    })
+
+    return this.http.put(`${this.apiUrl}/items/${productId}/decrease?quantity=${quantity}`, {}, { headers: headers });
+  }
+
+  getTotalQuantity(): Observable<number> {
+    // Lấy token từ localStorage
+    const jwtToken = localStorage.getItem("token");
+
+    if (!jwtToken) {
+      throw new Error("Token is missing");
+    }
+
+    const decodedToken: any = jwtDecode(jwtToken);
+    const userId = decodedToken['nameid'];
+
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${jwtToken}`);
+
+    return this.http.get<number>(`${this.apiUrl}/${userId}/total-quantity`, { headers: headers });
   }
 }

@@ -1,7 +1,8 @@
 import {Injectable} from '@angular/core';
 import {environment} from '../../environments/environment';
-import {HttpClient} from '@angular/common/http';
+import {HttpClient, HttpParams} from '@angular/common/http';
 import {Product} from '../models/product.model';
+import {Observable} from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -12,37 +13,27 @@ export class ProductService {
 
     getProducts()
     {
-      return this.http.get<Product[]>(`${this.apiUrl}products`);
+      return this.http.get<Product[]>(`${this.apiUrl}/products`);
     }
 
     getProductsByCategory(categorySlug: string)
     {
-      return this.http.get<Product[]>(`${this.apiUrl}categories/category/${categorySlug}`);
+      return this.http.get<Product[]>(`${this.apiUrl}/categories/category/${categorySlug}`);
     }
 
     getProductBySlugName(productSlug: string)
     {
-      return this.http.get<Product[]>(`${this.apiUrl}products/product/${productSlug}`);
+      return this.http.get<Product[]>(`${this.apiUrl}/products/detail/${productSlug}`);
     }
 
     getProductDetailsById(productId: number)
     {
-      return this.http.get<Product>(`${this.apiUrl}products/product/${productId}`);
+      return this.http.get<Product>(`${this.apiUrl}/products/product/${productId}`);
     }
-
-    getProductDetailsBySlugName(productSlug: string)
-    {
-      return this.http.get<Product>(`${this.apiUrl}products/product/${productSlug}`);
-    }
-
-    // createNewProduct(productData: FormData)
-    // {
-    //   return this.http.post<Product>(`${this.apiUrl}products`, product);
-    // }
 
     createNewProduct(productData: FormData)
     {
-      return this.http.post<Product>(`${this.apiUrl}products`, productData);
+      return this.http.post<Product>(`${this.apiUrl}/products`, productData);
     }
 
     updateExistedProduct(productId: number, productData: FormData)
@@ -52,7 +43,14 @@ export class ProductService {
 
     deleteProduct(productId: number)
     {
-      return this.http.delete(`${this.apiUrl}products/product/${productId}`);
+      return this.http.delete(`${this.apiUrl}/products/product/${productId}`);
     }
 
+    searchProducts(query: string): Observable<Product[]>
+    {
+      const searchUrl = `${this.apiUrl}/products/search`;
+      const params = new HttpParams().set('query', query);
+
+      return this.http.get<Product[]>(searchUrl, { params: params });
+    }
 }

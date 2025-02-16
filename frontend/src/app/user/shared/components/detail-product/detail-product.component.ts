@@ -14,11 +14,12 @@ import {Product} from '../../../../models/product.model';
 export class DetailProductComponent implements OnInit {
   product: any;
   error: string | null = null;
+  backendPath = "http://localhost:5252";
 
   constructor(
     private route: ActivatedRoute,
     private productService: ProductService,
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.route.paramMap.subscribe(params => {

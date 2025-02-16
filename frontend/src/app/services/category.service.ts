@@ -15,23 +15,23 @@ export class CategoryService {
   // Danh sách danh mục
   getCategories()
   {
-    return this.http.get<Category[]>(`${this.apiUrl}categories`);
+    return this.http.get<Category[]>(`${this.apiUrl}/categories`);
   }
 
   // Thêm mới danh mục sản phẩm
   addNewCategory(category: Category)
   {
-    return this.http.post<Category>(`${this.apiUrl}categories`, category);
+    return this.http.post<Category>(`${this.apiUrl}/categories`, category);
   }
 
   // Cập nhật danh mục
   updateExistedCategory(categoryId: number, category: Category)
   {
-    return this.http.put<Category>(`${this.apiUrl}categories/${categoryId}`, category);
+    return this.http.put<Category>(`${this.apiUrl}/categories/${categoryId}`, category);
   }
 
   // Xóa danh mục
   deleteCategory(categoryId: number) {
-    return this.http.delete(`${this.apiUrl}categories/`+ categoryId);
+    return this.http.delete(`${this.apiUrl}/categories/`+ categoryId);
   }
 }
