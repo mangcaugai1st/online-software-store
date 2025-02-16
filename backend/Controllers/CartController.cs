@@ -94,7 +94,7 @@ public class CartController : ControllerBase
     }
 
     [HttpPut("items/{productId}/increase")]
-    // PUT /api/cart/increase/{productId}?userId=1&quantity=2   SỬA LẠI
+    // PUT /api/cart/items/{productId}/increase?quantity=1
     public async Task<IActionResult> IncreaseQuantity(int productId, [FromQuery] int quantity)
     {
         if (productId <= 0 || quantity <= 0)
@@ -102,24 +102,24 @@ public class CartController : ControllerBase
             return BadRequest("Dữ liệu yêu cầu không hợp lệ");
         }
         
-        // Lấy userId từ JWT token 
-         var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        // Lấy userId từ JWT token
+        var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
          
-         if (string.IsNullOrEmpty(jwtToken))
-         {
-             return Unauthorized("Jwt Token không tồn tại");
-         }       
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return Unauthorized("Jwt Token không tồn tại");
+        }       
          
-         var userIdFromClaim = _jwtClaimsService.GetUserIdByJwt(jwtToken);
-         int userId = int.Parse(userIdFromClaim);
+        var userIdFromClaim = _jwtClaimsService.GetUserIdByJwt(jwtToken);
+        int userId = int.Parse(userIdFromClaim);
          
-         try 
-         {
+        try 
+        {
             // Gọi service để tăng số lượng sản phẩm
             var increaseQuantity = await _shoppingCartService.IncreaseQuantityAsync(userId, productId, quantity);
 
             return Ok(increaseQuantity);
-         }
+        }
         catch (ArgumentException ex)
         {
             return BadRequest(ex.Message);
@@ -137,27 +137,48 @@ public class CartController : ControllerBase
             return StatusCode(500, "Đã xảy ra lỗi khi cập nhật giỏ hàng");
         }
     }
-
-    [HttpPut("decrease/{productId}")]
-    public async Task<IActionResult> DecreaseQuantity(int userId, int productId, int quantity)
+    
+    [HttpPut("items/{productId}/decrease")]
+    public async Task<IActionResult> DecreaseQuantity(int productId, [FromQuery] int quantity)
     {
-         try
-         {
-             var result = await _shoppingCartService.DecreaseQuantityAsync(userId, productId, quantity);
-             return Ok(result);
-         }
-         catch (ArgumentException ex)
-         {
-             return BadRequest(ex.Message);
-         }
-         catch (InvalidOperationException ex)
-         {
-             return BadRequest(ex.Message);
-         }
-         catch (Exception)
-         {
-             return StatusCode(500, "Đã xảy ra lỗi khi cập nhật giỏ hàng");
-         }        
+        if (productId <= 0 || quantity <= 0)
+        {
+            return BadRequest("Dữ liệu yêu cầu không hợp lệ");
+        }
+
+        // Lấy userId từ JWT token
+        var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return Unauthorized("Jwt Token không tồn tại");
+        }
+
+        var userIdFromClaim = _jwtClaimsService.GetUserIdByJwt(jwtToken);
+        int userId = int.Parse(userIdFromClaim);
+        
+        try
+        {
+            var decreaseQuantity = await _shoppingCartService.DecreaseQuantityAsync(userId, productId, quantity);
+            
+            return Ok(decreaseQuantity);
+        }
+        catch (ArgumentException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (KeyNotFoundException ex)
+        {
+            return NotFound(ex.Message);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(ex.Message);
+        }
+        catch (Exception)
+        {
+            return StatusCode(500, "Đã xảy ra lỗi khi cập nhật giỏ hàng");
+        }
     }
 
     [HttpGet("{userId}/total-quantity")]

@@ -125,7 +125,6 @@ public class ShoppingCartService : IShoppingCartService
         {
             throw new Exception("Lỗi khi cập nhật giỏ hàng ", ex);
         }
-        // Lưu thay đổi vào cơ sở dữ liệu
         
         return cartItem; // Trả về giỏ hàng đã được cập nhật
     }
@@ -173,7 +172,6 @@ public class ShoppingCartService : IShoppingCartService
          {
              throw new Exception("Lỗi khi cập nhật giỏ hàng ", ex);
          }
-         // Lưu thay đổi vào cơ sở dữ liệu
          
          return cartItem; // Trả về giỏ hàng đã được cập nhật            
     }
