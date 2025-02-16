@@ -13,34 +13,34 @@ public class ProductsController : ControllerBase
 {
     private readonly ApplicationDbContext _context;
     private readonly IProductService _productService;
-    
+
     public ProductsController(IProductService productService, ApplicationDbContext context)
     {
         _productService = productService ?? throw new ArgumentNullException(nameof(productService));
         _context = context;
     }
-    
+
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Product>>> GetProducts()
     {
         var products = await _productService.GetAllProductsAsync();
-        
+
         return Ok(products);
     }
-    
+
     [HttpGet("product/{productId}")]
     public async Task<ActionResult<Product>> GetProduct(int productId)
     {
         var product = await _productService.GetProductByIdAsync(productId);
-        
+
         if (product == null)
         {
             return NotFound();
         }
-        
+
         return Ok(product);
     }
-    
+
     [HttpGet("detail/{productSlug}")]
     public async Task<ActionResult<Product>> GetProductDetailsByProductSlug(string productSlug)
     {
@@ -50,7 +50,7 @@ public class ProductsController : ControllerBase
         {
             return NotFound();
         }
-        
+
         return productDetails;
     }
 
@@ -64,7 +64,7 @@ public class ProductsController : ControllerBase
 
         if (!ModelState.IsValid)
         {
-            return BadRequest(ModelState); 
+            return BadRequest(ModelState);
         }
 
         try
@@ -75,21 +75,22 @@ public class ProductsController : ControllerBase
         }
         catch (Exception e)
         {
-            return StatusCode(500, new {message = "Có lỗi xảy ra khi thêm sản phẩm mới"});
+            return StatusCode(500, new { message = "Có lỗi xảy ra khi thêm sản phẩm mới" });
         }
     }
-    
-    [HttpPut("update_product/{productId}")] 
+
+    [HttpPut("update_product/{productId}")]
     public async Task<ActionResult<Product>> UpdateProduct(int productId, [FromBody] ProductDto productDto)
     {
         if (productDto == null)
         {
             return BadRequest("Dữ liệu không được để trống");
         }
+
         try
         {
             var updatedProduct = await _productService.UpdateProductAsync(productId, productDto);
-            
+
             return Ok(updatedProduct);
         }
         catch (Exception ex)
@@ -97,7 +98,8 @@ public class ProductsController : ControllerBase
             return StatusCode(500, new { message = ex.Message });
         }
     }
-    [HttpDelete("delete_product/{productId}")] 
+
+    [HttpDelete("delete_product/{productId}")]
     public async Task<IActionResult> DeleteProduct(int productId)
     {
         var result = await _productService.DeleteProductAsync(productId);
@@ -105,8 +107,26 @@ public class ProductsController : ControllerBase
         {
             return NotFound();
         }
+
+        return NoContent();
+    }
+
+    [HttpGet("search")]
+    public async Task<ActionResult<IEnumerable<Product>>> SearchProducts([FromQuery] string query)
+    {
+        if (string.IsNullOrWhiteSpace(query))
+        {
+            return BadRequest("Query parameter is required.");
+        }
+
+        var products = await _productService.SearchProductAsync(query);
+
+        if (products == null || !products.Any())
+        {
+            return NotFound("No products found matching the search query.");
+        }
         
-        return NoContent(); 
+        return Ok(products);
     }
 }
 // IActionResult
