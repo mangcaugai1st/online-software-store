@@ -13,7 +13,8 @@ public interface IProductService
     Task<Product?> GetProductDetailsBySlugNameAsync(string slugName);
     Task<Product> AddProductAsync(ProductDto productDto);
     Task<Product> UpdateProductAsync(int productId, ProductDto productDto);
-    Task<bool> DeleteProductAsync(int productId); 
+    Task<bool> DeleteProductAsync(int productId);
+    Task<IEnumerable<Product>> SearchProductAsync(string query);
 }
 public class ProductService : IProductService
 {
@@ -25,22 +26,25 @@ public class ProductService : IProductService
         _environment = environment;
     }
 
+    // Lấy toàn bộ danh sách sản phẩm
     public async Task<IEnumerable<Product>> GetAllProductsAsync()
     {
         return await _context.Products.ToListAsync();
     }
 
+    // Lấy chi tiết sản phẩm theo id
     public async Task<Product?> GetProductByIdAsync(int id)
     {
         return await _context.Products.FindAsync(id);
     }
 
+    // Lấy chi tiết sản phẩm theo id
     public async Task<Product?> GetProductDetailsByIdAsync(int id)
     {
-        // return await _context.Products.FirstOrDefaultAsync(product => product.Id == id);
-        return await _context.Products.FindAsync(id);
+        return await _context.Products.FirstOrDefaultAsync(product => product.Id == id);
     }
 
+    // Lấy chi tiết sản phẩm theo slug
     public async Task<Product?> GetProductDetailsBySlugNameAsync(string slugName)
     {
         return await _context.Products.Where(product => product.Slug == slugName).FirstOrDefaultAsync();
@@ -148,6 +152,15 @@ public class ProductService : IProductService
         await _context.SaveChangesAsync();
 
         return true;
+    }
+
+    // Tìm kiếm sản phẩm theo tên hoặc mô tả
+    public async Task<IEnumerable<Product>> SearchProductAsync(string query)
+    {
+        return await _context.Products
+            .Where(x => x.Name.ToLower().Contains(query.ToLower()) 
+                        || x.Description.ToLower().Contains(query.ToLower()))
+            .ToListAsync();  // Lấy kết quả từ cơ sở dữ liệu bất đồng bộ
     }
 }
 // IActionResult
