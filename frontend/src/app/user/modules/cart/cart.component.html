@@ -35,8 +35,8 @@
 
               <div>
                 <h3 class="text-base font-bold text-gray-800">{{ item.product.name }}</h3>
-                <input class="text-xs text-red-500 cursor-pointer mt-0.5" type="button">x
-
+                <input (click)="removeItem(item.id)" class="text-xs text-red-500 cursor-pointer mt-0.5" type="button">x
+                <button (click)="removeItem(item.productId)">x</button>
                 <div class="flex gap-4 mt-4">
                   <div class="relative group">
                     <button type="button"
@@ -80,7 +80,11 @@
             </div>
             <div class="ml-auto">
               <h4
-                class="text-base font-bold text-gray-800">{{ item.product.price | currency:'VND':'symbol':'1.0-0' }}</h4>
+                class="text-base font-bold text-gray-800">{{ item.product.price | currency:'VND':'symbol':'1.0-0' }}
+              </h4>
+              <h4
+                class="text-base text-gray-800">{{ item.product.price * item.quantity | currency:'VND':'symbol':'1.0-0' }}
+              </h4>
             </div>
           </div>
         </div>
@@ -97,10 +101,10 @@
         </div>
 
         <ul class="text-gray-800 mt-8 space-y-4">
-          <li class="flex flex-wrap gap-4 text-base">Giảm giá <span class="ml-auto font-bold">$0.00</span></li>
-          <li class="flex flex-wrap gap-4 text-base">Phí vận chuyển <span class="ml-auto font-bold">$2.00</span></li>
-          <li class="flex flex-wrap gap-4 text-base">Thuế <span class="ml-auto font-bold">$4.00</span></li>
-          <li class="flex flex-wrap gap-4 text-base font-bold">Tổng giá <span class="ml-auto">$52.00</span></li>
+          <li class="flex flex-wrap gap-4 text-base">Giảm giá <span class="ml-auto font-bold">{{ 0 | currency: 'VND' }}</span></li>
+          <li class="flex flex-wrap gap-4 text-base">Phí vận chuyển <span class="ml-auto font-bold">{{ 0 | currency: 'VND' }}</span></li>
+          <li class="flex flex-wrap gap-4 text-base">Thuế <span class="ml-auto font-bold">{{ 0 | currency: 'VND' }}</span></li>
+          <li class="flex flex-wrap gap-4 text-base font-bold">Tổng giá <span class="ml-auto">{{ getTotalAmount() | currency: 'VND' }}</span></li>
         </ul>
 
         <div class="mt-8 space-y-2">

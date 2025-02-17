@@ -124,4 +124,19 @@ export class CartService {
 
     return this.http.get<number>(`${this.apiUrl}/${userId}/total-quantity`, { headers: headers });
   }
+
+  deleteItemFromCart(productId: number): Observable<any>
+  {
+    const jwtToken = localStorage.getItem("token");
+
+    if (!jwtToken) {
+      throw new Error("Token is missing");
+    }
+
+    const headers = new HttpHeaders({
+      'Authorization': `Bearer ${jwtToken}`
+    })
+
+    return this.http.delete(`${this.apiUrl}/delete/${productId}`, { headers: headers });
+  }
 }

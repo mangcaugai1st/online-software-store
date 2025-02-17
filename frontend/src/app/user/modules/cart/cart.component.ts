@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {CartService} from '../../../services/cart.service';
+import {ProductService} from '../../../services/product.service';
 import {Cart} from '../../../models/cart.model';
 import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 
@@ -26,6 +27,7 @@ export class CartComponent implements OnInit {
   constructor(
     private http: HttpClient,
     private cartService: CartService,
+    private productService: ProductService,
   ) { }
 
   ngOnInit() {
@@ -75,12 +77,24 @@ export class CartComponent implements OnInit {
     return this.cartItems.reduce((total, item) => total + (item.product.price * item.quantity), 0);
   }
 
-  getTotal(): number {
-    return this.getSubtotal() + this.shippingFee;
+  getTotalAmount(): number {
+    let total = 0;
+    this.cartItems.forEach(item => {
+      total += item.product.price * item.quantity;
+    });
+
+    return total;
   }
 
-  removeItem(item: Cart): void {
-
+  removeItem(productId: number): void {
+    this.cartService.deleteItemFromCart(productId).subscribe({
+      next: (response) => {
+        window.location.reload();
+      },
+      error: (error) => {
+        console.error('Đã xảy ra lỗi: ', error.message);
+      }
+    })
   }
 
   checkout() {
