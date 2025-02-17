@@ -11,6 +11,8 @@ public interface IShoppingCartService
     Task<Cart> IncreaseQuantityAsync(int userId, int productId, int quantity);
     Task<Cart> DecreaseQuantityAsync(int userId, int productId, int quantity);
     Task<int> GetTotalQuantityAsync(int userId);
+    Task<bool> DeleteOneItemInCartAsync(int userId, int productId);
+    Task<bool> DeleteAllItemInCartAsync(int userId);
 }
 
 public class ShoppingCartService : IShoppingCartService
@@ -183,5 +185,47 @@ public class ShoppingCartService : IShoppingCartService
 
         // Trả về tổng số lượng
         return await Task.FromResult(totalQuantity);
+    }
+
+    public async Task<bool> DeleteOneItemInCartAsync(int userId, int productId)
+    {
+        // Tìm sản phẩm trong giỏ hàng của người dùng
+        var selectedItem =  await _context.Carts.FirstOrDefaultAsync(x => x.UserId == userId && x.ProductId == productId);
+
+        // Nếu không tìm thấy sản phẩm thì trả về false hoặc có thể ném exception tùy theo yêu cầu
+        if (selectedItem == null)
+        {
+            // throw new CultureNotFoundException($"Không tìm thấy sản phẩm với id {productId}");
+            return false;
+        }
+        
+        // Xóa sản phẩm ra khỏi giỏ hàng
+        _context.Carts.Remove(selectedItem);
+       
+        // Lưu thay đổi vào csdl
+        await _context.SaveChangesAsync(); 
+        
+        return true; // Trả về true nếu xóa thành công
+    }
+
+    public async Task<bool> DeleteAllItemInCartAsync(int userId)
+    {
+        // Tìm sản phẩm trong giỏ hàng của người dùng
+        var selectedItem = await _context.Carts.FirstOrDefaultAsync(x => x.UserId == userId);
+
+        // Nếu không tìm thấy sản phẩm thì trả về false hoặc có thể ném exception tùy theo yêu cầu
+        if (selectedItem == null)
+        {
+            // throw new CultureNotFoundException($"Không tìm thấy sản phẩm với id {productId}");
+            return false;
+        }
+
+        // Xóa sản phẩm ra khỏi giỏ hàng
+        _context.Carts.Remove(selectedItem);
+
+        // Lưu thay đổi vào csdl
+        await _context.SaveChangesAsync();
+
+        return true; // Trả về true nếu xóa thành công       
     }
 }

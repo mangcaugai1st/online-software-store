@@ -58,6 +58,7 @@ public class ProductService : IProductService
              { 
                  Name = productDto.Name,
                  Price = productDto.Price,
+                 Discount = productDto.Discount,
                  // ImagePath = uniqueFileName,
                  // ImagePath = productDto.ImagePath,
                  Description = productDto.Description,
@@ -123,6 +124,7 @@ public class ProductService : IProductService
          */
         product.Name = productDto.Name;
         product.Price = productDto.Price;
+        product.Discount = productDto.Discount; 
         // product.ImagePath = productDto.ImagePath;
         product.Description = productDto.Description;
         product.StockQuantity = productDto.StockQuantity;

@@ -10,11 +10,11 @@ public class User
     public int Id { get; set; } // User's id 
     
     [Required]
-    [MaxLength(10)]
+    [MaxLength(20)]
     public string? Username { get; set; } // username 
   
     [Required]
-    [MaxLength(18)]
+    [MaxLength(20)]
     public string? Password { get; set; }
    
     [Required] 

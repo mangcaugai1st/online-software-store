@@ -216,6 +216,43 @@ public class CartController : ControllerBase
         }
     }
 
+    [HttpDelete("delete/{productId}")]
+    public async Task<IActionResult> DeleteItemFromCart(int productId)
+    {
+        var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+        if (string.IsNullOrEmpty(jwtToken))
+        {
+            return Unauthorized("Token is missing");
+        }
+
+        var userIdFromClaim = _jwtClaimsService.GetUserIdByJwt(jwtToken);
+        
+        if (string.IsNullOrEmpty(userIdFromClaim))
+        {
+            return Unauthorized("Invalid token.");
+        }
+        
+        int userId = int.Parse(userIdFromClaim);
+        
+        // Kiểm tra xem user có quyền được truy cập giỏ hàng này không
+        if (int.Parse(userIdFromClaim) != userId)
+        {
+            return Forbid();
+        }
+        
+        try
+        {
+            var result = await _shoppingCartService.DeleteOneItemInCartAsync(userId, productId);
+
+            return Ok(new { message = "Sản phẩm đã được xóa khỏi giỏ hàng" });
+        }
+        catch (Exception e)
+        {
+            return StatusCode(500, e.Message);
+        }
+    }
+
     private int GetUserIdFromClaims()
     {
         var claims = User.Claims;

@@ -20,6 +20,8 @@ public class Product
     [Required]
     public decimal Price { get; set; } // Product's price
     
+    public decimal Discount { get; set; }
+    
     [Required]
     [MaxLength(500)]
     public string? ImagePath { get; set; } // Product's image

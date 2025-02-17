@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using backend.Models;
 
@@ -11,9 +12,11 @@ using backend.Models;
 namespace backend.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250217092233_Increase MaxLength for Username and Password in Users table")]
+    partial class IncreaseMaxLengthforUsernameandPasswordinUserstable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -259,9 +262,6 @@ namespace backend.Migrations
                         .HasMaxLength(1000000)
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<decimal>("Discount")
-                        .HasColumnType("decimal(18,2)");
-
                     b.Property<string>("ImagePath")
                         .IsRequired()
                         .HasMaxLength(500)
@@ -300,31 +300,29 @@ namespace backend.Migrations
                         {
                             Id = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5594),
+                            CreatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8695),
                             Description = "photoshop",
-                            Discount = 0m,
                             ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
                             IsActive = true,
                             Name = "Photoshop",
                             Price = 1000000m,
                             Slug = "photoshop",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5597)
+                            UpdatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8698)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5607),
+                            CreatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8710),
                             Description = "Dota 2",
-                            Discount = 0m,
                             ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
                             IsActive = true,
                             Name = "Dota 2",
                             Price = 100000m,
                             Slug = "dota2",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5607)
+                            UpdatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8710)
                         });
                 });
 
@@ -409,25 +407,25 @@ namespace backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5634),
+                            CreatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8741),
                             Email = "admin@example.com",
                             IsActive = true,
                             IsAdmin = true,
                             Password = "AdminPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5635),
+                            UpdatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8742),
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5639),
+                            CreatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8746),
                             Email = "user@example.com",
                             IsActive = true,
                             IsAdmin = false,
                             Password = "UserPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5639),
+                            UpdatedAt = new DateTime(2025, 2, 17, 9, 22, 29, 201, DateTimeKind.Utc).AddTicks(8746),
                             Username = "user"
                         });
                 });
