@@ -1,7 +1,7 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Product} from '../../../../models/product.model';
 import {ProductService} from '../../../../services/product.service'
-import {NgForOf} from '@angular/common';
+import {CurrencyPipe, NgForOf, NgIf} from '@angular/common';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CartService} from '../../../../services/cart.service';
 
@@ -10,7 +10,9 @@ import {CartService} from '../../../../services/cart.service';
   standalone: true,
   imports: [
     NgForOf,
-    RouterLink
+    RouterLink,
+    NgIf,
+    CurrencyPipe
   ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'

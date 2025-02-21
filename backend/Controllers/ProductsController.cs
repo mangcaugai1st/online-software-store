@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.Entities;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using backend.Services;
@@ -57,10 +58,10 @@ public class ProductsController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Product>> AddNewProduct([FromForm] ProductDto productDto)
     {
-        if (productDto == null)
-        {
-            return BadRequest("Yêu cầu dữ liệu trong productDto.");
-        }
+        // if (productDto == null)
+        // {
+        //     return BadRequest("Yêu cầu dữ liệu trong productDto.");
+        // }
 
         if (!ModelState.IsValid)
         {
@@ -79,7 +80,7 @@ public class ProductsController : ControllerBase
         }
     }
 
-    [HttpPut("update_product/{productId}")]
+    [HttpPut("update_product/{productId}")] // CẬP NHẬT THÔNG TIN CỦA MỘT SẢN PHẨM
     public async Task<ActionResult<Product>> UpdateProduct(int productId, [FromBody] ProductDto productDto)
     {
         if (productDto == null)
@@ -103,6 +104,7 @@ public class ProductsController : ControllerBase
     public async Task<IActionResult> DeleteProduct(int productId)
     {
         var result = await _productService.DeleteProductAsync(productId);
+        
         if (!result)
         {
             return NotFound();

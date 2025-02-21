@@ -22,7 +22,7 @@ namespace backend.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
-            modelBuilder.Entity("backend.Models.Address", b =>
+            modelBuilder.Entity("backend.Models.Entities.Address", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -51,7 +51,7 @@ namespace backend.Migrations
                     b.ToTable("Addresses");
                 });
 
-            modelBuilder.Entity("backend.Models.Cart", b =>
+            modelBuilder.Entity("backend.Models.Entities.Cart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -83,7 +83,7 @@ namespace backend.Migrations
                     b.ToTable("Carts");
                 });
 
-            modelBuilder.Entity("backend.Models.Category", b =>
+            modelBuilder.Entity("backend.Models.Entities.Category", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -129,7 +129,7 @@ namespace backend.Migrations
                         });
                 });
 
-            modelBuilder.Entity("backend.Models.Order", b =>
+            modelBuilder.Entity("backend.Models.Entities.Order", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -172,7 +172,7 @@ namespace backend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("backend.Models.OrderDetail", b =>
+            modelBuilder.Entity("backend.Models.Entities.OrderDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -204,7 +204,7 @@ namespace backend.Migrations
                     b.ToTable("OrderDetails");
                 });
 
-            modelBuilder.Entity("backend.Models.PaymentDetail", b =>
+            modelBuilder.Entity("backend.Models.Entities.PaymentDetail", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -241,7 +241,7 @@ namespace backend.Migrations
                     b.ToTable("PaymentDetails");
                 });
 
-            modelBuilder.Entity("backend.Models.Product", b =>
+            modelBuilder.Entity("backend.Models.Entities.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -270,12 +270,15 @@ namespace backend.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("bit");
 
+                    b.Property<decimal?>("MonthlyRentalPrice")
+                        .HasColumnType("decimal(18,2)");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<decimal>("Price")
+                    b.Property<decimal?>("Price")
                         .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("Slug")
@@ -286,8 +289,14 @@ namespace backend.Migrations
                     b.Property<int>("StockQuantity")
                         .HasColumnType("int");
 
+                    b.Property<int>("SubscriptionType")
+                        .HasColumnType("int");
+
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<decimal?>("YearlyRentalPrice")
+                        .HasColumnType("decimal(18,2)");
 
                     b.HasKey("Id");
 
@@ -300,7 +309,7 @@ namespace backend.Migrations
                         {
                             Id = 1,
                             CategoryId = 2,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5594),
+                            CreatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(181),
                             Description = "photoshop",
                             Discount = 0m,
                             ImagePath = "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png",
@@ -309,13 +318,14 @@ namespace backend.Migrations
                             Price = 1000000m,
                             Slug = "photoshop",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5597)
+                            SubscriptionType = 0,
+                            UpdatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(184)
                         },
                         new
                         {
                             Id = 2,
                             CategoryId = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5607),
+                            CreatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(191),
                             Description = "Dota 2",
                             Discount = 0m,
                             ImagePath = "https://cdn-icons-png.flaticon.com/512/588/588308.png",
@@ -324,11 +334,45 @@ namespace backend.Migrations
                             Price = 100000m,
                             Slug = "dota2",
                             StockQuantity = 100,
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5607)
+                            SubscriptionType = 0,
+                            UpdatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(192)
                         });
                 });
 
-            modelBuilder.Entity("backend.Models.Review", b =>
+            modelBuilder.Entity("backend.Models.Entities.ProductSubscriptions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("DurationMonths")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsPerpetual")
+                        .HasColumnType("bit");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("ProductId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("UpdatedAt")
+                        .HasColumnType("datetime2");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Product_Subscriptions");
+                });
+
+            modelBuilder.Entity("backend.Models.Entities.Review", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -361,7 +405,7 @@ namespace backend.Migrations
                     b.ToTable("Reviews");
                 });
 
-            modelBuilder.Entity("backend.Models.User", b =>
+            modelBuilder.Entity("backend.Models.Entities.User", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -409,32 +453,32 @@ namespace backend.Migrations
                         new
                         {
                             Id = 1,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5634),
+                            CreatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(312),
                             Email = "admin@example.com",
                             IsActive = true,
                             IsAdmin = true,
                             Password = "AdminPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5635),
+                            UpdatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(313),
                             Username = "admin"
                         },
                         new
                         {
                             Id = 2,
-                            CreatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5639),
+                            CreatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(317),
                             Email = "user@example.com",
                             IsActive = true,
                             IsAdmin = false,
                             Password = "UserPassword",
                             Phone = "0123456789",
-                            UpdatedAt = new DateTime(2025, 2, 17, 10, 4, 52, 253, DateTimeKind.Utc).AddTicks(5639),
+                            UpdatedAt = new DateTime(2025, 2, 21, 10, 35, 38, 404, DateTimeKind.Utc).AddTicks(318),
                             Username = "user"
                         });
                 });
 
-            modelBuilder.Entity("backend.Models.Address", b =>
+            modelBuilder.Entity("backend.Models.Entities.Address", b =>
                 {
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -443,15 +487,15 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Models.Cart", b =>
+            modelBuilder.Entity("backend.Models.Entities.Cart", b =>
                 {
-                    b.HasOne("backend.Models.Product", "Product")
+                    b.HasOne("backend.Models.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -462,15 +506,15 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Models.Order", b =>
+            modelBuilder.Entity("backend.Models.Entities.Order", b =>
                 {
-                    b.HasOne("backend.Models.Address", "Address")
+                    b.HasOne("backend.Models.Entities.Address", "Address")
                         .WithMany()
                         .HasForeignKey("AddressId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "User")
+                    b.HasOne("backend.Models.Entities.User", "User")
                         .WithMany("Orders")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -481,15 +525,15 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Models.OrderDetail", b =>
+            modelBuilder.Entity("backend.Models.Entities.OrderDetail", b =>
                 {
-                    b.HasOne("backend.Models.Order", "Order")
+                    b.HasOne("backend.Models.Entities.Order", "Order")
                         .WithMany("OrderDetails")
                         .HasForeignKey("OrderId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.Product", "Product")
+                    b.HasOne("backend.Models.Entities.Product", "Product")
                         .WithMany("OrderDetails")
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Restrict)
@@ -500,20 +544,20 @@ namespace backend.Migrations
                     b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("backend.Models.PaymentDetail", b =>
+            modelBuilder.Entity("backend.Models.Entities.PaymentDetail", b =>
                 {
-                    b.HasOne("backend.Models.Order", "Order")
+                    b.HasOne("backend.Models.Entities.Order", "Order")
                         .WithOne("PaymentDetail")
-                        .HasForeignKey("backend.Models.PaymentDetail", "OrderId")
+                        .HasForeignKey("backend.Models.Entities.PaymentDetail", "OrderId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Order");
                 });
 
-            modelBuilder.Entity("backend.Models.Product", b =>
+            modelBuilder.Entity("backend.Models.Entities.Product", b =>
                 {
-                    b.HasOne("backend.Models.Category", "Category")
+                    b.HasOne("backend.Models.Entities.Category", "Category")
                         .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -522,15 +566,26 @@ namespace backend.Migrations
                     b.Navigation("Category");
                 });
 
-            modelBuilder.Entity("backend.Models.Review", b =>
+            modelBuilder.Entity("backend.Models.Entities.ProductSubscriptions", b =>
                 {
-                    b.HasOne("backend.Models.Product", "Product")
+                    b.HasOne("backend.Models.Entities.Product", "Product")
                         .WithMany()
                         .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("backend.Models.User", "User")
+                    b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("backend.Models.Entities.Review", b =>
+                {
+                    b.HasOne("backend.Models.Entities.Product", "Product")
+                        .WithMany()
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("backend.Models.Entities.User", "User")
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -541,19 +596,19 @@ namespace backend.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("backend.Models.Order", b =>
+            modelBuilder.Entity("backend.Models.Entities.Order", b =>
                 {
                     b.Navigation("OrderDetails");
 
                     b.Navigation("PaymentDetail");
                 });
 
-            modelBuilder.Entity("backend.Models.Product", b =>
+            modelBuilder.Entity("backend.Models.Entities.Product", b =>
                 {
                     b.Navigation("OrderDetails");
                 });
 
-            modelBuilder.Entity("backend.Models.User", b =>
+            modelBuilder.Entity("backend.Models.Entities.User", b =>
                 {
                     b.Navigation("Orders");
                 });

@@ -1,5 +1,6 @@
 import {Category} from "./category.model"
 import {OrderDetail} from "./orderDetail.model"
+import {SubscriptionType} from "../enums/subscription-type.enum"
 
 export interface Product {
   id: number;
@@ -7,6 +8,10 @@ export interface Product {
   category: Category | null;
   name: string | null;
   price: number;
+  subscriptionType: SubscriptionType;
+  monthlyRentalPrice: number | null;
+  yearlyRentalPrice: number | null;
+  discount: number | null;
   imagePath: string | null;
   description: string | null;
   stockQuantity: number;

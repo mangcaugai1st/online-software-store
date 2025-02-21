@@ -127,16 +127,19 @@ export class CartService {
 
   deleteItemFromCart(productId: number): Observable<any>
   {
+    // Lấy token từ LocalStorage
     const jwtToken = localStorage.getItem("token");
 
     if (!jwtToken) {
       throw new Error("Token is missing");
     }
 
+    // Thiết lập header Authorization với Bearer token
     const headers = new HttpHeaders({
       'Authorization': `Bearer ${jwtToken}`
     })
 
+    // Gửi yêu cầu DELETE đến API
     return this.http.delete(`${this.apiUrl}/delete/${productId}`, { headers: headers });
   }
 }

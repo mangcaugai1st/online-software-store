@@ -42,7 +42,7 @@
                 <h2 class="font-manrope font-bold text-3xl leading-10 text-gray-900 mb-2">
                   {{product.name}}
                 </h2>
-                <p class="font-normal text-base text-gray-500">ABS LUGGAGE</p>
+                <p class="font-normal text-base text-gray-500">{{product.category.name}}</p>
               </div>
               <button class="group transition-all duration-500 p-0.5">
                 <svg width="60" height="60" viewBox="0 0 60 60" fill="none"
@@ -61,8 +61,14 @@
 
             <div class="flex flex-col min-[400px]:flex-row min-[400px]:items-center mb-8 gap-y-3">
               <div class="flex items-center">
-                <h5 class="font-manrope font-semibold text-2xl leading-9 text-gray-900 ">{{product.price}}</h5>
-                <span class="ml-3 font-semibold text-lg text-indigo-600">30% off</span>
+                <h5 *ngIf="product.SubscriptionType === 'Perpetual'" class="font-manrope font-semibold text-2xl leading-9 text-gray-900 ">{{product.price}}</h5>
+                <div>
+                  <h5  *ngIf="product.SubscriptionType === 'Perpetual'" class="font-manrope font-semibold text-2xl leading-9 text-gray-900 ">{{ product.monthlyRentalPrice }}</h5>
+                  <h5>-</h5>
+                  <h5
+                    class="font-manrope font-semibold text-2xl leading-9 text-gray-900 ">{{ product.yearlyRentalPrice }}</h5>
+                </div>
+                <span class="ml-3 font-semibold text-lg text-indigo-600">-{{product.discount}}%</span>
               </div>
               <svg class="mx-5 max-[400px]:hidden" xmlns="http://www.w3.org/2000/svg" width="2"
                    height="36" viewBox="0 0 2 36" fill="none">

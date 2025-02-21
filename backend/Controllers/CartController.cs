@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using backend.Models;
+using backend.Models.Entities;
 using backend.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;

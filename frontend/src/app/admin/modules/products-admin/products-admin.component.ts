@@ -31,4 +31,23 @@ export class ProductsAdminComponent implements OnInit {
       error: error => console.log(error)
     })
   }
+
+  deleteProduct(productId: number): void {
+    // Hiển thị hộp thoại xác nhận xóa.
+    const isConfirmed = window.confirm('Bạn có chắc muốn xóa sản phẩm này không?');
+
+    if (isConfirmed) {
+      this.productService.deleteProduct(productId).subscribe(
+        (response) => {
+          this.getProducts();
+        },
+        (error) => {
+          console.log('Có lỗi xảy ra khi xóa sản phẩm ', error);
+        }
+      );
+    }
+    else {
+      console.log('Hành động xóa đã bị hủy.');
+    }
+  }
 }

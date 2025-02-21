@@ -16,6 +16,10 @@ export class ProductService {
       return this.http.get<Product[]>(`${this.apiUrl}/products`);
     }
 
+    getProductById(productId: number): Observable<Product> {
+      return this.http.get<Product>(`${this.apiUrl}/products/product/${productId}`);
+    }
+
     getProductsByCategory(categorySlug: string)
     {
       return this.http.get<Product[]>(`${this.apiUrl}/categories/category/${categorySlug}`);
@@ -38,12 +42,12 @@ export class ProductService {
 
     updateExistedProduct(productId: number, productData: FormData)
     {
-      return this.http.put<Product>(`${this.apiUrl}/products/product/${productId}`, productData);
+      return this.http.put<Product>(`${this.apiUrl}/products/update_product/${productId}`, productData);
     }
 
     deleteProduct(productId: number)
     {
-      return this.http.delete(`${this.apiUrl}/products/product/${productId}`);
+      return this.http.delete(`${this.apiUrl}/products/delete_product/${productId}`);
     }
 
     searchProducts(query: string): Observable<Product[]>

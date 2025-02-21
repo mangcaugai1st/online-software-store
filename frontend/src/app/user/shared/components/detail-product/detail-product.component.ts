@@ -15,6 +15,7 @@ export class DetailProductComponent implements OnInit {
   product: any;
   error: string | null = null;
   backendPath = "http://localhost:5252";
+  isForPerpetualPrice: boolean = false;
 
   constructor(
     private route: ActivatedRoute,
