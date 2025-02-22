@@ -47,7 +47,7 @@ export class CartComponent implements OnInit {
     });
   }
 
-  // Tăng số lượng sản phẩm trong giỏ hàng
+  // Tăng 1 số lượng sản phẩm trong giỏ hàng
   increaseQuantity(productId: number): void {
     this.cartService.increaseQuantity(productId, this.increase1ProductQuantity).subscribe({
       next: (response) => {
@@ -61,6 +61,7 @@ export class CartComponent implements OnInit {
     });
   }
 
+  // Giảm 1 số lượng sản phẩm trong giỏ hàng
   decreaseQuantity(productId: number): void {
     this.cartService.decreaseQuantity(productId, this.decrease1ProductQuantity).subscribe({
       next: (response) => {

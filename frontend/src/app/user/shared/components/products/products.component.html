@@ -11,8 +11,7 @@
         <div class="">
           <h6 class="font-medium text-xl leading-8 text-black mb-2">{{item.name}}</h6>
           <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.price |  currency:'VND':'symbol':'1.0-0' }}</h6>
-          <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.monthlyRentalPrice |  currency:'VND':'symbol':'1.0-0' }} / tháng</h6>
-          <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.yearlyRentalPrice  |  currency:'VND':'symbol':'1.0-0' }} / năm</h6>
+          <h6 *ngIf="item.monthlyRentalPrice" class="font-semibold text-xl leading-8 text-indigo-600">từ {{item.monthlyRentalPrice |  currency:'VND':'symbol':'1.0-0' }} / tháng</h6>
         </div>
         <button
           (click)="addToCart(item.id, quantity)"

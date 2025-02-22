@@ -82,8 +82,14 @@
               <h4
                 class="text-base font-bold text-gray-800">{{ item.product.price | currency:'VND':'symbol':'1.0-0' }}
               </h4>
-              <h4
-                class="text-base text-gray-800">{{ item.product.price * item.quantity | currency:'VND':'symbol':'1.0-0' }}
+              <h4 class="text-base text-gray-800">
+                {{ item.product.price * item.quantity | currency:'VND':'symbol':'1.0-0' }}
+              </h4>
+              <h4 class="text-base text-gray-800">
+                {{ item.product.monthlyRentalPrice | currency:'VND':'symbol':'1.0-0' }}
+              </h4>
+              <h4 class="text-base text-gray-800">
+                {{ item.product.yearlyRentalPrice | currency:'VND':'symbol':'1.0-0' }}
               </h4>
             </div>
           </div>

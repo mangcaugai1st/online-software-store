@@ -37,6 +37,29 @@ export class CartService {
     return this.http.post(`${this.apiUrl}/add`, body, { headers: headers });
   }
 
+  addToCartInProductDetails(productId: number, subscriptionType: any,  monthlyRentalPrice: number, yearlyRentalPrice: number, quantity: number): Observable<any> {
+    // Lấy JWT token từ LocalStorage
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      throw new Error("JWT token is missing");
+    }
+    // Tạo header chứa JWT token
+    const headers = new HttpHeaders({
+      'Authorization': 'Bearer ' + token,
+      'Content-Type': 'application/json'
+    })
+
+    // Dữ liệu yêu cầu
+    const body = {
+      productId: productId,
+      quantity: quantity
+    }
+
+    // Gửi yêu cầu POST tới API
+    return this.http.post(`${this.apiUrl}/add`, body, { headers: headers });
+  }
+
   // Hiển thị toàn bộ danh sách sản phẩm trong giỏ hàng theo id người dùng
   getProductsInCart(): Observable<any> {
     const token = localStorage.getItem("token");
