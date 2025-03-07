@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {Category} from '../../../../models/category.model'
 import {CategoryService} from '../../../../services/category.service'
 import {NgForOf} from '@angular/common';
-import {HttpClientModule} from '@angular/common/http';
 import {RouterLink} from '@angular/router';
 
 @Component({
@@ -10,7 +9,6 @@ import {RouterLink} from '@angular/router';
   standalone: true,
   imports: [
     NgForOf,
-    HttpClientModule,
     RouterLink
   ],
   templateUrl: './categories.component.html',
