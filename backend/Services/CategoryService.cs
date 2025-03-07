@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.Entities;
 using backend.Models.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.EntityFrameworkCore;

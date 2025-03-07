@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.Entities;
 using backend.Models.DTOs;
 using backend.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,8 @@ public class UsersController : ControllerBase
          Phone = u.Phone,
       }).ToListAsync();
    }
-   
+  
+   // GET: api/Users/{userId}
    [HttpGet("{userId}")]
    public async Task<ActionResult<User>> GetUser(int userId)
    {
@@ -46,6 +48,7 @@ public class UsersController : ControllerBase
       return user;
    }
    
+   // Post: api/Users
    [HttpPost]
    public async Task<ActionResult<User>> CreateUser(User user)
    {
@@ -54,9 +57,9 @@ public class UsersController : ControllerBase
       
       return CreatedAtAction(nameof(GetUser), new { id = user.Id }, user);
    }
-   
+
    [HttpPut("update")]
-   public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateUserProfileDto? updateUserProfileDTO)
+   public async Task<IActionResult> UpdateUserProfile([FromBody] UpdateUserProfileDTO? updateUserProfileDTO)
    {
       // Token được lấy từ header của http request dưới dạng: Authorization: Bearer <jwt_token>
       var jwtToken = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");

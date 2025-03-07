@@ -2,6 +2,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using backend.Models;
+using backend.Models.Entities;
 using backend.Models.DTOs;
 using backend.Services;
 using Microsoft.AspNetCore.Identity.Data;

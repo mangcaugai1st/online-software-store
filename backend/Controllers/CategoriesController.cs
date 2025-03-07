@@ -1,5 +1,6 @@
 using System.Runtime.InteropServices.JavaScript;
 using backend.Models;
+using backend.Models.Entities;
 using backend.Models.DTOs;
 using backend.Services;
 using Microsoft.AspNetCore.Mvc;

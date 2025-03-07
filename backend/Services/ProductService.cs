@@ -1,4 +1,5 @@
 using backend.Models;
+using backend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using backend.Models.DTOs;
 using Microsoft.AspNetCore.Http.HttpResults;
@@ -7,7 +8,7 @@ namespace backend.Services;
 
 public interface IProductService
 {
-    Task<IEnumerable<Product>> GetAllProductsAsync(); 
+    Task<IEnumerable<Product>> GetAllProductsAsync(string sortOrder = "asc"); 
     Task<Product?> GetProductByIdAsync(int id); 
     Task<Product?> GetProductDetailsByIdAsync(int id);
     Task<Product?> GetProductDetailsBySlugNameAsync(string slugName);
@@ -16,6 +17,7 @@ public interface IProductService
     Task<bool> DeleteProductAsync(int productId);
     Task<IEnumerable<Product>> SearchProductAsync(string query);
 }
+
 public class ProductService : IProductService
 {
     private readonly ApplicationDbContext _context;
@@ -27,9 +29,26 @@ public class ProductService : IProductService
     }
 
     // Lấy toàn bộ danh sách sản phẩm
-    public async Task<IEnumerable<Product>> GetAllProductsAsync()
+    public async Task<IEnumerable<Product>> GetAllProductsAsync(string sortOrder)
     {
-        return await _context.Products.ToListAsync();
+        
+         var products = await _context.Products.ToListAsync();
+         
+         // Sắp xếp theo giá
+         switch (sortOrder.ToLower())
+         {
+             case "desc":
+                 products = products.OrderByDescending(x => x.Price).ToList();
+                 break;
+             case "asc":
+                 products = products.OrderBy(x => x.Price).ToList();
+                 break;
+             default: 
+                 products = products.ToList();
+                 break;
+         }
+
+         return products;
     }
 
     // Lấy chi tiết sản phẩm theo id
@@ -47,17 +66,45 @@ public class ProductService : IProductService
     // Lấy chi tiết sản phẩm theo slug
     public async Task<Product?> GetProductDetailsBySlugNameAsync(string slugName)
     {
-        return await _context.Products.Where(product => product.Slug == slugName).FirstOrDefaultAsync();
+        return await _context.Products.Where(product => product.Slug == slugName).Include(x => x.Category).FirstOrDefaultAsync();
     }
 
+    // Thêm một sản phẩm mới.
     public async Task<Product> AddProductAsync(ProductDto productDto)
     {
+        // Ánh xạ kiểu SubscriptionType từ ProductDto sang Product entity
+        SubscriptionType subscriptionType = productDto.SubscriptionType;
+
+        // Kiểm tra loại bản quyền phần mềm
+        switch (subscriptionType)
+        {
+            case SubscriptionType.Perpetual: //  Vĩnh viễn
+                if (productDto.YearlyRentalPrice.HasValue)
+                {
+                    throw new ArgumentException("Không được nhập giá thuê theo năm.");
+                }
+                break;
+            
+            case SubscriptionType.Rental:
+                if (!productDto.YearlyRentalPrice.HasValue)
+                {
+                    throw new ArgumentException("Không được để trống giá thuê theo năm");
+                }
+                break;
+            
+            default:
+                throw new ArgumentOutOfRangeException();
+        }
+            
         try
         {
              var product = new Product
              { 
                  Name = productDto.Name,
                  Price = productDto.Price,
+                 SubscriptionType = subscriptionType,
+                 // MonthlyRentalPrice = productDto.MonthlyRentalPrice,
+                 YearlyRentalPrice = productDto.YearlyRentalPrice,
                  Discount = productDto.Discount,
                  // ImagePath = uniqueFileName,
                  // ImagePath = productDto.ImagePath,
@@ -67,7 +114,7 @@ public class ProductService : IProductService
                  IsActive = productDto.IsActive,
                  CategoryId = productDto.CategoryId
              };
-     
+             
              if (productDto.ImagePath != null)
              {
                  // Khai báo folder nào sẽ là folder lưu trữ hình ảnh. 
@@ -91,15 +138,14 @@ public class ProductService : IProductService
                      await productDto.ImagePath.CopyToAsync(fileStream);
                  }
                  
-                 // Lưu đường dẫn tương đối vào database
-                 product.ImagePath = "/images/" + uniqueFileName;
+                 product.ImagePath = "/images/" + uniqueFileName; // Lưu đường dẫn tương đối vào database
                  
              }
+             
              _context.Products.Add(product); // Thêm mới sản phẩm vào database 
              await _context.SaveChangesAsync(); 
              
-             // trả về thông tin sản phẩm đã được tạo thành công
-             return product;       
+             return product; // trả về thông tin sản phẩm đã được tạo thành công   
         }
         catch (Exception e)
         {
@@ -110,12 +156,43 @@ public class ProductService : IProductService
 
     public async Task<Product> UpdateProductAsync(int productId, ProductDto productDto)
     { 
+        // Tìm kiếm sản phẩm theo id
         var product = await _context.Products.FindAsync(productId);
 
         if (product == null)
         {
             throw new KeyNotFoundException($"Không tìm thấy sản phẩm");
-            
+        }
+
+        if (productDto.ImagePath != null)
+        {
+            //var imagePath = Path.Combine(_environment.WebRootPath, "images");
+
+            // Khai báo folder nào sẽ là folder lưu trữ hình ảnh. 
+            string uploadsFolder = Path.Combine(_environment.WebRootPath, "images");
+
+            // Tạo tên file duy nhất để tránh trùng lặp. 
+            string uniqueFileName = Guid.NewGuid().ToString() + "_" + productDto.ImagePath.FileName;
+
+            // Đảm bảo folder lưu trữ hình ảnh tồn tại, nếu không sẽ tạo mới.
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            // Đường dẫn đầy đủ của file 
+            string filePath = Path.Combine(uploadsFolder, uniqueFileName);
+
+            // Lưu tệp hình ảnh vào thư mục
+            using (var fileStream = new FileStream(filePath, FileMode.Create))
+            {
+                await productDto.ImagePath.CopyToAsync(fileStream);
+            }
+            // Sau khi file hình ảnh được lưu thì
+            // Gán đường dẫn hình ảnh vào thuộc tính ImagePath của productDto
+
+            // productDto.ImagePath = Path.Combine("images", uniqueFileName);
+            productDto.ImagePath = new FormFile(null, 0, 0, "imagePath", uniqueFileName);
         }
         /*
          * Cập nhật đối tượng product:
@@ -124,6 +201,9 @@ public class ProductService : IProductService
          */
         product.Name = productDto.Name;
         product.Price = productDto.Price;
+        product.SubscriptionType = productDto.SubscriptionType;
+        // product.MonthlyRentalPrice = productDto.MonthlyRentalPrice;
+        product.YearlyRentalPrice = productDto.YearlyRentalPrice;
         product.Discount = productDto.Discount; 
         // product.ImagePath = productDto.ImagePath;
         product.Description = productDto.Description;
@@ -131,12 +211,11 @@ public class ProductService : IProductService
         product.Slug = productDto.Slug;
         product.IsActive = productDto.IsActive;
         product.CategoryId = productDto.CategoryId;
+
+
+        _context.Products.Update(product); // Cập nhật dữ liệu vào cơ sở dữ liệu
         
-        /*
-         * Cập nhật dữ liệu vào cơ sở dữ liệu
-         */
-        _context.Products.Update(product);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(); // Lưu những thay dooidr
         
         return product;
     }
@@ -151,7 +230,7 @@ public class ProductService : IProductService
         }
         
         _context.Products.Remove(product);
-        await _context.SaveChangesAsync();
+        await _context.SaveChangesAsync(); 
 
         return true;
     }
@@ -164,6 +243,7 @@ public class ProductService : IProductService
                         || x.Description.ToLower().Contains(query.ToLower()))
             .ToListAsync();  // Lấy kết quả từ cơ sở dữ liệu bất đồng bộ
     }
+    
 }
 // IActionResult
 // Là một interface

@@ -3,7 +3,9 @@ using Microsoft.EntityFrameworkCore;
 using backend.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens;
+using System.Security.Claims;
 using backend.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -48,27 +50,37 @@ builder.Services.AddScoped<IJwtClaimsService, GetUserIdByJwtClaims>();
 //         };
 //     });
 
-builder.Services.AddAuthentication(options => 
+builder.Services.AddAuthentication(options =>
     {
-        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme; 
+        options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
         options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
     })
     .AddJwtBearer(options =>
-    { 
+    {
         options.SaveToken = true;
         options.RequireHttpsMetadata = false;
-        options.TokenValidationParameters = new TokenValidationParameters 
+        options.TokenValidationParameters = new TokenValidationParameters
         {
+            // ValidateIssuer = true,
+            // ValidateAudience = true,
+            // ValidateLifetime = true,
+            // ValidateIssuerSigningKey = true,
+            // ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            // ValidAudience = builder.Configuration["Jwt:Audience"],
+            // IssuerSigningKey = new SymmetricSecurityKey(
+            //     Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
             ValidateIssuer = true,
             ValidateAudience = true,
             ValidIssuer = "https://localhost:5252", // Đảm bảo khớp với "iss" trong token
             ValidAudience = "myapp_api", // Đảm bảo khớp với "aud" trong token
             ClockSkew = TimeSpan.Zero, // Để token hết hạn chính xác
-            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("your_random_secure_key_min_32_chars_here")) // Đảm bảo "IssuerSigningKey" trùng với key đã dùng khi tạo token
+            IssuerSigningKey =
+                new SymmetricSecurityKey(
+                    Encoding.UTF8.GetBytes(
+                        "your_random_secure_key_min_32_chars_here")) // Đảm bảo "IssuerSigningKey" trùng với key đã dùng khi tạo token
         };
     });
-
 // Cấu hình Authorization 
 // builder.Services.AddAuthorization(Options =>
 // {

@@ -9,11 +9,12 @@ public interface IJwtClaimsService
 }
 public class GetUserIdByJwtClaims : IJwtClaimsService
 {
+    // Method lấy userId từ mã jwt token
     public string GetUserIdByJwt(string jwtToken)
     {
         if (string.IsNullOrEmpty(jwtToken))
         {
-            throw new ArgumentException("JWT token is required.");
+            throw new ArgumentException("JWT token is required."); // Nếu không tìm thấy mã token
         }
 
         try

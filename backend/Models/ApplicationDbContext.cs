@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using backend.Models.Entities;
 
 namespace backend.Models;
 
@@ -7,19 +8,29 @@ public class ApplicationDbContext : DbContext
     public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
     public DbSet<Product> Products { get; set; }
+    // public DbSet<ProductSubscriptions> ProductSubscriptions { get; set; }
     public DbSet<Category> Categories { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Cart> Carts { get; set; }
     public DbSet<Review> Reviews { get; set; }
-    public DbSet<Address> Addresses { get; set; }
+    // public DbSet<Address> Addresses { get; set; }
     public DbSet<Order> Orders { get; set; }
     public DbSet<OrderDetail> OrderDetails { get; set; }
-    public DbSet<PaymentDetail> PaymentDetails { get; set; }
+    // public DbSet<PaymentDetail> PaymentDetails { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);
 
+        // Đảm bảo Username và Email là duy nhất
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Username)
+            .IsUnique();
+        
+        modelBuilder.Entity<User>()
+            .HasIndex(u => u.Email)
+            .IsUnique();
+        
         modelBuilder.Entity<Category>(entity =>
         {
             entity.HasIndex(c => c.Slug).IsUnique();
@@ -35,11 +46,11 @@ public class ApplicationDbContext : DbContext
             .OnDelete(DeleteBehavior.Restrict);
         
         // Orders - PaymentDetails: one-to-one
-        modelBuilder.Entity<Order>()
-            .HasOne(e => e.PaymentDetail)
-            .WithOne(e => e.Order)
-            .HasForeignKey<PaymentDetail>(e => e.OrderId)
-            .IsRequired();
+        // modelBuilder.Entity<Order>()
+        //     .HasOne(e => e.PaymentDetail)
+        //     .WithOne(e => e.Order)
+        //     .HasForeignKey<PaymentDetail>(e => e.OrderId)
+        //     .IsRequired();
 
         // Orders - OrderDetails: one-to-many 
         modelBuilder.Entity<OrderDetail>()
@@ -54,7 +65,7 @@ public class ApplicationDbContext : DbContext
             .WithMany(e => e.OrderDetails)
             .HasForeignKey(e => e.ProductId)
             .OnDelete(DeleteBehavior.Restrict);
-
+        
         modelBuilder.Entity<Category>().HasData(
             new Category { Id = 1, Name = "Giải trí", Slug = "giai_tri", Description = "testest" },
             new Category { Id = 2, Name = "Làm việc", Slug = "lam_viec", Description = "testest" }
@@ -73,9 +84,9 @@ public class ApplicationDbContext : DbContext
 }
 /*
  * Entity Framework Core command line
- * - dotnet ef database update
- * - dotnet ef database drop
- * - dotnet ef dbcontext info
+ * - dotnet ef database update: cập nhật database 
+ * - dotnet ef database drop : Drop database 
+ * - dotnet ef dbcontext info 
  * - dotnet ef dbcontext list
  * - dotnet ef dbcontext optimize
  * - dotnet ef migrations add

@@ -4206,11 +4206,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Z_Project\\mangcaugai1st\\backend\\backend.csproj",
+      "projectUniqueName": "C:\\Z_Project\\online-software-store\\backend\\backend.csproj",
       "projectName": "backend",
-      "projectPath": "C:\\Z_Project\\mangcaugai1st\\backend\\backend.csproj",
+      "projectPath": "C:\\Z_Project\\online-software-store\\backend\\backend.csproj",
       "packagesPath": "C:\\Users\\mangc\\.nuget\\packages\\",
-      "outputPath": "C:\\Z_Project\\mangcaugai1st\\backend\\obj\\",
+      "outputPath": "C:\\Z_Project\\online-software-store\\backend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\mangc\\AppData\\Roaming\\NuGet\\NuGet.Config"

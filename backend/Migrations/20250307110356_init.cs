@@ -3,10 +3,12 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace backend.Migrations
 {
     /// <inheritdoc />
-    public partial class DBInit : Migration
+    public partial class init : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -32,10 +34,12 @@ namespace backend.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    Username = table.Column<string>(type: "nvarchar(10)", maxLength: 10, nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(18)", maxLength: 18, nullable: false),
-                    Email = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: false),
+                    Username = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    FullName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(20)", maxLength: 20, nullable: false),
+                    Email = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
                     Phone = table.Column<string>(type: "nvarchar(15)", maxLength: 15, nullable: false),
+                    Address = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
                     IsAdmin = table.Column<bool>(type: "bit", nullable: false),
                     IsActive = table.Column<bool>(type: "bit", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
@@ -54,7 +58,10 @@ namespace backend.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CategoryId = table.Column<int>(type: "int", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Price = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    SubscriptionType = table.Column<int>(type: "int", nullable: false),
+                    YearlyRentalPrice = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
+                    Discount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
                     ImagePath = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
                     Description = table.Column<string>(type: "nvarchar(max)", maxLength: 1000000, nullable: true),
                     StockQuantity = table.Column<int>(type: "int", nullable: false),
@@ -75,25 +82,28 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Addresses",
+                name: "Orders",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     UserId = table.Column<int>(type: "int", nullable: false),
-                    AddressLine = table.Column<string>(type: "nvarchar(1000)", maxLength: 1000, nullable: false),
-                    PostalCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    IsDefault = table.Column<bool>(type: "bit", nullable: false)
+                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Status = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    PaymentStatus = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Addresses", x => x.Id);
+                    table.PrimaryKey("PK_Orders", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Addresses_Users_UserId",
+                        name: "FK_Orders_Users_UserId",
                         column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -155,38 +165,6 @@ namespace backend.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orders",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<int>(type: "int", nullable: false),
-                    AddressId = table.Column<int>(type: "int", nullable: false),
-                    OrderDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    TotalAmount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    PaymentStatus = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
-                    CreatedAt = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UpdatedAt = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Orders", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Orders_Addresses_AddressId",
-                        column: x => x.AddressId,
-                        principalTable: "Addresses",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Orders_Users_UserId",
-                        column: x => x.UserId,
-                        principalTable: "Users",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "OrderDetails",
                 columns: table => new
                 {
@@ -215,34 +193,32 @@ namespace backend.Migrations
                         onDelete: ReferentialAction.Restrict);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "PaymentDetails",
-                columns: table => new
+            migrationBuilder.InsertData(
+                table: "Categories",
+                columns: new[] { "Id", "Description", "Name", "Slug" },
+                values: new object[,]
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    OrderId = table.Column<int>(type: "int", nullable: false),
-                    PaymentMethod = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    TransactionId = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    Amount = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
-                    PaymentDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PaymentDetails", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_PaymentDetails_Orders_OrderId",
-                        column: x => x.OrderId,
-                        principalTable: "Orders",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                    { 1, "testest", "Giải trí", "giai_tri" },
+                    { 2, "testest", "Làm việc", "lam_viec" }
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Addresses_UserId",
-                table: "Addresses",
-                column: "UserId");
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Address", "CreatedAt", "Email", "FullName", "IsActive", "IsAdmin", "Password", "Phone", "UpdatedAt", "Username" },
+                values: new object[,]
+                {
+                    { 1, null, new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7339), "admin@example.com", null, true, true, "AdminPassword", "0123456789", new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7339), "admin" },
+                    { 2, null, new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7343), "user@example.com", null, true, false, "UserPassword", "0123456789", new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7344), "user" }
+                });
+
+            migrationBuilder.InsertData(
+                table: "Products",
+                columns: new[] { "Id", "CategoryId", "CreatedAt", "Description", "Discount", "ImagePath", "IsActive", "Name", "Price", "Slug", "StockQuantity", "SubscriptionType", "UpdatedAt", "YearlyRentalPrice" },
+                values: new object[,]
+                {
+                    { 1, 2, new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7298), "photoshop", 0m, "https://logos-world.net/wp-content/uploads/2020/11/Adobe-Photoshop-Logo-2015-2019.png", true, "Photoshop", 1000000m, "photoshop", 100, 0, new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7301), null },
+                    { 2, 1, new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7311), "Dota 2", 0m, "https://cdn-icons-png.flaticon.com/512/588/588308.png", true, "Dota 2", 100000m, "dota2", 100, 0, new DateTime(2025, 3, 7, 11, 3, 55, 988, DateTimeKind.Utc).AddTicks(7312), null }
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Carts_ProductId",
@@ -271,20 +247,9 @@ namespace backend.Migrations
                 column: "ProductId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Orders_AddressId",
-                table: "Orders",
-                column: "AddressId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Orders_UserId",
                 table: "Orders",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_PaymentDetails_OrderId",
-                table: "PaymentDetails",
-                column: "OrderId",
-                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Products_CategoryId",
@@ -300,6 +265,18 @@ namespace backend.Migrations
                 name: "IX_Reviews_UserId",
                 table: "Reviews",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Email",
+                table: "Users",
+                column: "Email",
+                unique: true);
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true);
         }
 
         /// <inheritdoc />
@@ -312,9 +289,6 @@ namespace backend.Migrations
                 name: "OrderDetails");
 
             migrationBuilder.DropTable(
-                name: "PaymentDetails");
-
-            migrationBuilder.DropTable(
                 name: "Reviews");
 
             migrationBuilder.DropTable(
@@ -324,13 +298,10 @@ namespace backend.Migrations
                 name: "Products");
 
             migrationBuilder.DropTable(
-                name: "Addresses");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Categories");
-
-            migrationBuilder.DropTable(
-                name: "Users");
         }
     }
 }

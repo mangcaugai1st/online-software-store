@@ -1,5 +1,6 @@
 using System.Globalization;
 using backend.Models;
+using backend.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 using backend.Models.DTOs;
 namespace backend.Services;

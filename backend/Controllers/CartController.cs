@@ -1,6 +1,7 @@
 using System.Diagnostics;
 using System.Security.Claims;
 using backend.Models;
+using backend.Models.Entities;
 using backend.Models.DTOs;
 using Microsoft.AspNetCore.Mvc;
 using backend.Services;
@@ -70,7 +71,7 @@ public class CartController : ControllerBase
         
         if (string.IsNullOrEmpty(jwtToken))
         {
-            return Unauthorized("Jwt Token không tồn tại");
+            return Unauthorized("JWT Token is required.");
         }
         
         try
