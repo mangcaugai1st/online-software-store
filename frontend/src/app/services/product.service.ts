@@ -11,8 +11,9 @@ export class ProductService {
   private apiUrl = environment.apiUrl;
   constructor(private http: HttpClient) { }
 
-    getProducts()
+    getProducts(sortOrder: string = 'asc')
     {
+      const params = new HttpParams().set('sortOrder', sortOrder);
       return this.http.get<Product[]>(`${this.apiUrl}/products`);
     }
 

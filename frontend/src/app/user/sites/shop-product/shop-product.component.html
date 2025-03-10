@@ -1,5 +1,8 @@
 <p>shop-product works!</p>
 <div *ngIf="products.length > 0 else noProducts"></div>
+<div>
+  <button (click)="toggleSortOrder()">Sắp xếp theo giá: {{ sortOrder === 'asc' ? 'Giá tăng dần' : 'Giá giảm dần' }}</button>
+</div>
 <div class="grid grid-cols-4 gap-4">
   <div *ngFor="let item of products">
     <a [routerLink]="['/san_pham', item.slug]" class="max-w-[384px] mx-auto">
@@ -14,8 +17,7 @@
           <h6 class="font-medium text-xl leading-8 text-black mb-2">{{item.name}}</h6>
           <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.price}}</h6>
         </div>
-        <button
-
+        <button (click)="addToCart(item.id, quantity)"
           class="p-2 min-[400px]:p-4 rounded-full bg-white border border-gray-300 flex items-center justify-center group shadow-sm shadow-transparent transition-all duration-500 hover:shadow-gray-200 hover:border-gray-400 hover:bg-gray-50">
           <svg class="stroke-gray-900 transition-all duration-500 group-hover:stroke-black"
                xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 26 26"
@@ -33,4 +35,4 @@
 <ng-template #noProducts>
   <h3>Không có sản phẩm nào!</h3>
 </ng-template>
-<!--(click)="addToCart(item.id, quantity)"-->
+

@@ -19,15 +19,17 @@ import {
 } from './admin/modules/products-admin/update-existing-product/update-existing-product.component';
 import {CartComponent} from './user/sites/cart/cart.component';
 import {ShopProductComponent} from './user/sites/shop-product/shop-product.component';
+import {UserProfileComponent} from './user/sites/user-profile/user-profile.component';
 
 export const routes: Routes = [
   { path: '', component: HomeComponent},
   { path: 'login', component: LoginComponent},
   { path: 'dang_ky', component: RegisterComponent},
   { path: 'danh_muc/:categorySlug', component: ProductListComponent},
-  { path: 'san_phams', component: ShopProductComponent},
+  { path: 'cua_hang', component: ShopProductComponent},
   { path: 'san_pham/:productSlug', component: DetailProductComponent},
   { path: 'gio_hang', component: CartComponent},
+  { path: 'ho_so', component: UserProfileComponent},
 
   // {
   //   path: 'user',
