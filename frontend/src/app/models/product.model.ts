@@ -1,7 +1,7 @@
 import {Category} from "./category.model"
 import {OrderDetail} from "./orderDetail.model"
 
-enum SubscriptionType {
+export enum SubscriptionType {
   Perpetual,
   Rental
 }

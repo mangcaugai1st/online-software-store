@@ -1,9 +1,11 @@
 import {Component, OnInit} from '@angular/core';
-import { Category } from '../../../../models/category.model'
+import { Category } from '../../../../models/category.model';
+import { SubscriptionType } from '../../../../models/product.model';
 import {CategoryService} from '../../../../services/category.service';
 import {ProductService} from '../../../../services/product.service';
 import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgForOf, NgIf} from '@angular/common';
+
 @Component({
   selector: 'app-create-new-products',
   standalone: true,
@@ -23,6 +25,18 @@ export class CreateNewProductsComponent implements OnInit {
   imagePreview: string | undefined;
   selectedFile: File | null = null;
 
+  /*
+  * Chuyển enum thành array để dùng *ngFor
+  -   Object.keys(SubscriptionType) trả về một mảng chứa các keys của enum SubscriptionType.
+  -   Ví dụ: enum SubscriptionType { Basic = 1, Premium = 2, Enterprise = 3 }
+    thì sẽ được trả về mảng [ 'Basic', 'Premium', 'Enterprise', '1', '2', '3' ]
+  -   .filter(key => isNaN(+key))
+      +key chuyển mỗi key thành số. Ví dụ "1" thành 1, "Premium" vẫn là một chuỗi
+  * */
+  subscriptionTypes = Object.keys(SubscriptionType).filter(key => isNaN(+key));
+  selectedSubscriptionType: SubscriptionType;   // Biến để lưu giá trị được chọn
+
+
   constructor(
     private categoryService : CategoryService,
     private productService: ProductService,
@@ -31,7 +45,10 @@ export class CreateNewProductsComponent implements OnInit {
     this.productForm = this.formGroup.group({
       name: ['', Validators.required],
       categoryId: [null, Validators.required],
-      price: ['', Validators.required],
+      subscriptionType: ['', Validators.required],
+      price: [''],
+      yearlyRentalPrice: [''],
+      discount: [''],
       slug: ['', Validators.required],
       imagePath: [null],
       description: [''],
@@ -74,7 +91,9 @@ export class CreateNewProductsComponent implements OnInit {
       const formData = new FormData();
       formData.append("name", this.productForm.get("name")?.value);
       formData.append("categoryId", this.productForm.get("categoryId")?.value);
+      formData.append("subscriptionType", this.productForm.get("subscriptionType")?.value);
       formData.append("price", this.productForm.get("price")?.value);
+      formData.append("yearlyRentalPrice", this.productForm.get("yearlyRentalPrice")?.value);
       formData.append("slug", this.productForm.get("slug")?.value);
       formData.append("description", this.productForm.get("description")?.value);
       formData.append("stockQuantity", this.productForm.get("stockQuantity")?.value);

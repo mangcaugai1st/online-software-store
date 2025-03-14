@@ -14,6 +14,7 @@ import {CategoriesComponent} from '../../shared/components/categories/categories
 })
 export class HomeComponent {
   slide = [
-    "https://animebird.net/wp-content/uploads/2018/07/9-3.jpg?w=800&h=449&crop=1"
+    //"https://animebird.net/wp-content/uploads/2018/07/9-3.jpg?w=800&h=449&crop=1"
+    "./images/banner/Group_2.png"
   ]
 }
