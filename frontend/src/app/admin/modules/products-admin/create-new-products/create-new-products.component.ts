@@ -94,6 +94,7 @@ export class CreateNewProductsComponent implements OnInit {
       formData.append("subscriptionType", this.productForm.get("subscriptionType")?.value);
       formData.append("price", this.productForm.get("price")?.value);
       formData.append("yearlyRentalPrice", this.productForm.get("yearlyRentalPrice")?.value);
+      formData.append("discount", this.productForm.get("discount")?.value);
       formData.append("slug", this.productForm.get("slug")?.value);
       formData.append("description", this.productForm.get("description")?.value);
       formData.append("stockQuantity", this.productForm.get("stockQuantity")?.value);

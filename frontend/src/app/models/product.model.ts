@@ -14,6 +14,7 @@ export interface Product {
   price: number;
   SubscriptionType : SubscriptionType;
   yearlyRentalPrice: number | null;
+  discount: number | null;
   imagePath: string | null;
   description: string | null;
   stockQuantity: number;

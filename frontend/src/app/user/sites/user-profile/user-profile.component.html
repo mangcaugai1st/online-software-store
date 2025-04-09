@@ -1,11 +1,21 @@
 <div *ngIf="user">
-  <h1 class="text-3xl">Thông tin của bạn</h1>
-  <ul class="list-disc">
-    <li><p class="text-xl text-black">Tên tài khoản: </p> {{ user.username }}</li>
-    <li>Họ tên: {{ user.fullName || 'null' }} </li>
-    <li>Số điện thoại: {{ user.phone  || 'null' }}</li>
-    <li>Email: {{ user.email || 'null' }}</li>
-    <li>Địa chỉ: {{user.address || 'null' }}</li>
+  <h2 class="mb-2 text-lg font-semibold text-gray-900 dark:text-white">Thông tin của bạn</h2>
+  <ul class="max-w-md space-y-1 text-gray-500 list-disc list-inside dark:text-gray-400">
+    <li>
+      Tên tài khoản: {{ user.username }}
+    </li>
+    <li>
+      Tên đầy đủ: {{ user.fullName || 'null' }}
+    </li>
+    <li>
+      Số điện thoại: {{ user.phone  || 'null' }}
+    </li>
+    <li>
+      Email: {{ user.email || 'null' }}
+    </li>
+    <li>
+      Địa chỉ: {{user.address || 'null' }}
+    </li>
   </ul>
 
   <button (click)="showEditProfileModal()" type="button" class="modal-button  py-2.5 px-5 text-xs bg-indigo-600 text-white rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-indigo-700"> Cập nhật thông tin </button>

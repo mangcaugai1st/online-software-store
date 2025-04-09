@@ -1,17 +1,20 @@
 import {Component, OnInit, Input} from '@angular/core';
 import {Product} from '../../../../models/product.model';
 import {ProductService} from '../../../../services/product.service'
-import {NgForOf} from '@angular/common';
+import {NgForOf, NgIf, CurrencyPipe} from '@angular/common';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {CartService} from '../../../../services/cart.service';
+
 
 @Component({
   selector: 'app-products',
   standalone: true,
-  imports: [
-    NgForOf,
-    RouterLink
-  ],
+    imports: [
+        NgForOf,
+        RouterLink,
+        NgIf,
+        CurrencyPipe,
+    ],
   templateUrl: './products.component.html',
   styleUrl: './products.component.css'
 })

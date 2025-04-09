@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Product} from '../../../models/product.model';
 import {ProductService} from '../../../services/product.service';
 import {RouterLink} from '@angular/router';
-import {NgForOf, NgIf} from '@angular/common';
+import {NgForOf, NgIf, CurrencyPipe} from '@angular/common';
 import {CartService} from '../../../services/cart.service';
 
 @Component({
@@ -11,7 +11,8 @@ import {CartService} from '../../../services/cart.service';
   imports: [
     RouterLink,
     NgForOf,
-    NgIf
+    NgIf,
+    CurrencyPipe
   ],
   templateUrl: './shop-product.component.html',
   styleUrl: './shop-product.component.css'

@@ -3,14 +3,15 @@
     <a [routerLink]="['/san_pham', item.slug]" class="max-w-[384px] mx-auto">
       <div class="w-full max-w-sm aspect-square relative">
         <img src="{{'http://localhost:5252/'+item.imagePath}}" alt="serum bottle image" class="w-full h-full rounded-xl object-cover">
-        <span
-          class="py-1 min-[400px]:py-2 px-2 min-[400px]:px-4 cursor-pointer rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 font-medium text-base leading-7 text-white absolute top-3 right-3 z-10">20%
-                            Off</span>
+        <span *ngIf="item.discount"
+          class="py-1 min-[400px]:py-2 px-2 min-[400px]:px-4 cursor-pointer rounded-lg bg-gradient-to-tr from-indigo-600 to-purple-600 font-medium text-base leading-7 text-white absolute top-3 right-3 z-10">-{{item.discount}}%
+        </span>
       </div>
       <div class="mt-5 flex items-center justify-between">
         <div class="">
           <h6 class="font-medium text-xl leading-8 text-black mb-2">{{item.name}}</h6>
-          <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.price}}</h6>
+          <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.price - (item.price * (item.discount / 100)) | currency : 'VND'}}</h6>
+          <h6 class="font-semibold text-xl leading-8 text-indigo-600">{{item.yearlyRentalPrice - (item.yearlyRentalPrice * (item.discount / 100)) | currency : 'VND'}}</h6>
         </div>
         <button
           (click)="addToCart(item.id, quantity)"

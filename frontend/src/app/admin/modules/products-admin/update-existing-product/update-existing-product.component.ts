@@ -5,7 +5,7 @@ import {Category} from '../../../../models/category.model';
 import {CategoryService} from '../../../../services/category.service';
 import {ProductService} from '../../../../services/product.service';
 import {ActivatedRoute} from '@angular/router';
-import {Product} from '../../../../models/product.model';
+import {Product, SubscriptionType} from '../../../../models/product.model';
 
 @Component({
   selector: 'app-update-existing-product',
@@ -27,6 +27,8 @@ export class UpdateExistingProductComponent implements OnInit {
   selectedFile: File | null = null;
   // Lấy chi tiết sản phẩm
   productDetails: Product;
+
+  subscriptionTypes = Object.keys(SubscriptionType).filter(key => isNaN(+key));
 
   constructor(
     private categoryService: CategoryService,

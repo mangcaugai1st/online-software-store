@@ -80,7 +80,7 @@ export class CartComponent implements OnInit {
   getTotalAmount(): number {
     let total = 0;
     this.cartItems.forEach(item => {
-      total += item.product.price * item.quantity;
+      total += item.product.price * item.quantity + item.product.yearlyRentalPrice * item.quantity;
     });
 
     return total;
